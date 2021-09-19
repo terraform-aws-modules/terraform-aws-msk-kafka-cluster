@@ -42,6 +42,18 @@ module "vpc" {
   create_database_subnet_group = true
   enable_nat_gateway           = true
   single_nat_gateway           = true
+  map_public_ip_on_launch      = false
+
+  manage_default_security_group  = true
+  default_security_group_ingress = []
+  default_security_group_egress  = []
+
+  enable_flow_log                      = true
+  flow_log_destination_type            = "cloud-watch-logs"
+  create_flow_log_cloudwatch_log_group = true
+  create_flow_log_cloudwatch_iam_role  = true
+  flow_log_max_aggregation_interval    = 60
+  flow_log_log_format                  = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${vpc-id} $${subnet-id} $${instance-id} $${tcp-flags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${az-id} $${sublocation-type} $${sublocation-id}"
 
   tags = local.tags
 }
@@ -59,7 +71,10 @@ module "security_group" {
 }
 
 resource "aws_kms_key" "this" {
-  description = "KMS CMK for ${local.name}"
+  description         = "KMS CMK for ${local.name}"
+  enable_key_rotation = true
+
+  tags = local.tags
 }
 
 resource "aws_secretsmanager_secret" "this" {
@@ -68,6 +83,8 @@ resource "aws_secretsmanager_secret" "this" {
   name        = "AmazonMSK_${each.value}_${random_pet.this.id}"
   description = "Secret for ${local.name} - ${each.value}"
   kms_key_id  = aws_kms_key.this.key_id
+
+  tags = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
