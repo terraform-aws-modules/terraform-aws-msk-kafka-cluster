@@ -29,7 +29,7 @@ resource "random_pet" "this" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3"
+  version = "~> 3.0"
 
   name = local.name
   cidr = "10.0.0.0/18"
@@ -60,7 +60,7 @@ module "vpc" {
 
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4"
+  version = "~> 4.0"
 
   name        = local.name
   description = "Security group for ${local.name}"
@@ -119,7 +119,7 @@ resource "aws_secretsmanager_secret_policy" "this" {
 
 module "s3_logs_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 2"
+  version = "~> 2.0"
 
   bucket = "${local.name}-${local.bucket_postfix}"
   acl    = "log-delivery-write"

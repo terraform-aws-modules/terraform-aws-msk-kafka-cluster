@@ -18,7 +18,7 @@ locals {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3"
+  version = "~> 3.0"
 
   name = local.name
   cidr = "10.0.0.0/18"
@@ -49,7 +49,7 @@ module "vpc" {
 
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4"
+  version = "~> 4.0"
 
   name        = local.name
   description = "Security group for ${local.name}"
