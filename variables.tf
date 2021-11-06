@@ -8,7 +8,7 @@ variable "create" {
 variable "name" {
   description = "Name of the MSK cluster"
   type        = string
-  default     = ""
+  default     = "msk" # to avoid: Error: cluster_name must be 1 characters or higher
 }
 
 variable "kafka_version" {
@@ -135,6 +135,12 @@ variable "s3_logs_prefix" {
   description = "Prefix to append to the folder name"
   type        = string
   default     = null
+}
+
+variable "timeouts" {
+  description = "Create, update, and delete timeout configurations for the cluster"
+  type        = map(string)
+  default     = {}
 }
 
 variable "tags" {

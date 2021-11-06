@@ -86,6 +86,12 @@ resource "aws_msk_cluster" "this" {
     }
   }
 
+  timeouts {
+    create = lookup(var.timeouts, "create", null)
+    update = lookup(var.timeouts, "update", null)
+    delete = lookup(var.timeouts, "delete", null)
+  }
+
   # required for appautoscaling
   lifecycle {
     ignore_changes = [broker_node_group_info[0].ebs_volume_size]

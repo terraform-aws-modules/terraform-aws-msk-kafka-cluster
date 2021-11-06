@@ -43,6 +43,11 @@ output "zookeeper_connect_string" {
   value       = module.msk_cluster.zookeeper_connect_string
 }
 
+output "zookeeper_connect_string_tls" {
+  description = "A comma separated list of one or more hostname:port pairs to use to connect to the Apache Zookeeper cluster via TLS. The returned values are sorted alphbetically"
+  value       = module.msk_cluster.zookeeper_connect_string_tls
+}
+
 # Configuration
 output "configuration_arn" {
   description = "Amazon Resource Name (ARN) of the configuration"
