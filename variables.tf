@@ -8,7 +8,7 @@ variable "create" {
 variable "name" {
   description = "Name of the MSK cluster"
   type        = string
-  default     = ""
+  default     = "msk" # to avoid: Error: cluster_name must be 1 characters or higher
 }
 
 variable "kafka_version" {
