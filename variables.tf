@@ -137,6 +137,12 @@ variable "s3_logs_prefix" {
   default     = null
 }
 
+variable "timeouts" {
+  description = "Create, update, and delete timeout configurations for the cluster"
+  type        = map(string)
+  default     = {}
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources created"
   type        = map(string)
