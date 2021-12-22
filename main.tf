@@ -72,7 +72,7 @@ resource "aws_msk_cluster" "this" {
     broker_logs {
       cloudwatch_logs {
         enabled   = var.cloudwatch_logs_enabled
-        log_group = local.cloudwatch_log_group
+        log_group = var.cloudwatch_logs_enabled ? local.cloudwatch_log_group : null
       }
       firehose {
         enabled         = var.firehose_logs_enabled
