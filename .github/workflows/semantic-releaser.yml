@@ -1,4 +1,4 @@
-name: release
+name: Release
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   release:
-    name: release
+    name: Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,6 +26,12 @@ jobs:
           node-version: 14
 
       - name: Release
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          semantic_version: 18.0.0
+          extra_plugins: |
+            @semantic-release/changelog@6.0.0
+            @semantic-release/git@10.0.0
+            conventional-changelog-conventionalcommits@4.6.3
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE }}
-        run: npx semantic-release

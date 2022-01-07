@@ -4,7 +4,7 @@ Terraform module which creates AWS MSK (Managed Streaming for Kafka) resources.
 
 ## Usage
 
-See [`examples`](./examples) directory for working examples to reference:
+See [`examples`](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/tree/main/examples) directory for working examples to reference:
 
 ```hcl
 module "msk_kafka_cluster" {
@@ -106,10 +106,10 @@ module "msk_kafka_cluster" {
 
 ## Examples
 
-Examples codified under the [`examples`](./examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
+Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/tree/main/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
 
-- [Basic](./examples/basic)
-- [Complete](./examples/complete)
+- [Basic](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/tree/main/examples/basic)
+- [Complete](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/tree/main/examples/complete)
 
 ## Security & Compliance [<img src="https://raw.githubusercontent.com/clowdhaus/terraform-aws-msk-kafka-cluster/main/.github/images/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
 
@@ -224,4 +224,4 @@ No modules.
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](LICENSE).
+Apache-2.0 Licensed. See [LICENSE](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/blob/main/LICENSE).
