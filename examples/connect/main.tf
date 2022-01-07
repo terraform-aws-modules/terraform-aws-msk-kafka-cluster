@@ -6,11 +6,20 @@ locals {
   region = "us-east-1"
   name   = "ex-${replace(basename(path.cwd), "_", "-")}"
 
+  bucket_postfix = "${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+
+  connector_external_url = "https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/1.8.0.Final/debezium-connector-postgres-1.8.0.Final-plugin.tar.gz"
+  connector              = "debezium-connector-postgres/debezium-connector-postgres-1.8.0.Final.jar"
+
   tags = {
     Example     = local.name
     Environment = "dev"
   }
 }
+
+data "aws_region" "current" {}
+
+data "aws_caller_identity" "current" {}
 
 ################################################################################
 # Supporting Resources
@@ -59,18 +68,60 @@ module "security_group" {
   ingress_rules       = ["kafka-broker-tcp", "kafka-broker-tls-tcp"]
 }
 
-################################################################################
-# MSK Cluster - Disabled
-################################################################################
+module "s3_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 2.0"
 
-module "msk_cluster_disabled" {
-  source = "../.."
+  bucket = "${local.name}-${local.bucket_postfix}"
+  acl    = "private"
 
-  create = false
+  versioning = {
+    enabled = true
+  }
+
+  # Allow deletion of non-empty bucket for testing
+  force_destroy = true
+
+  attach_deny_insecure_transport_policy = true
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  server_side_encryption_configuration = {
+    rule = {
+      apply_server_side_encryption_by_default = {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  tags = local.tags
+}
+
+resource "aws_s3_bucket_object" "debezium_connector" {
+  bucket = module.s3_bucket.s3_bucket_id
+  key    = local.connector
+  source = local.connector
+
+  depends_on = [
+    null_resource.debezium_connector
+  ]
+}
+
+resource "null_resource" "debezium_connector" {
+  provisioner "local-exec" {
+    command = <<-EOT
+    wget -c ${local.connector_external_url} -O connector.tar.gz \
+    && tar -zxvf connector.tar.gz  ${local.connector} \
+    && rm *.tar.gz
+    EOT
+  }
 }
 
 ################################################################################
-# MSK Cluster - Default
+# MSK Cluster
 ################################################################################
 
 module "msk_cluster" {
@@ -84,6 +135,32 @@ module "msk_cluster" {
   broker_node_ebs_volume_size = 20
   broker_node_instance_type   = "kafka.t3.small"
   broker_node_security_groups = [module.security_group.security_group_id]
+
+  # Connect custom plugin(s)
+  connect_custom_plugins = {
+    debezium = {
+      name         = "debezium-postgresql"
+      description  = "Debezium PostgreSQL connector"
+      content_type = "JAR"
+
+      s3_bucket_arn     = module.s3_bucket.s3_bucket_arn
+      s3_file_key       = aws_s3_bucket_object.debezium_connector.id
+      s3_object_version = aws_s3_bucket_object.debezium_connector.version_id
+
+      timeouts = {
+        create = "20m"
+      }
+    }
+  }
+
+  # Connect worker configuration
+  create_connect_worker_configuration           = true
+  connect_worker_config_name                    = local.name
+  connect_worker_config_description             = "Example connect worker configuration"
+  connect_worker_config_properties_file_content = <<-EOT
+  key.converter=org.apache.kafka.connect.storage.StringConverter
+  value.converter=org.apache.kafka.connect.storage.StringConverter
+  EOT
 
   tags = local.tags
 }

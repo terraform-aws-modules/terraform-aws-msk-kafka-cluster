@@ -4,7 +4,10 @@ variable "create" {
   default     = true
 }
 
+################################################################################
 # Cluster
+################################################################################
+
 variable "name" {
   description = "Name of the MSK cluster"
   type        = string
@@ -149,7 +152,48 @@ variable "tags" {
   default     = {}
 }
 
-# CloudWatch log group
+################################################################################
+# Configuration
+################################################################################
+
+variable "configuration_name" {
+  description = "Name of the configuration"
+  type        = string
+  default     = null
+}
+
+variable "configuration_description" {
+  description = "Description of the configuration"
+  type        = string
+  default     = null
+}
+
+variable "configuration_server_properties" {
+  description = "Contents of the server.properties file. Supported properties are documented in the [MSK Developer Guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-configuration-properties.html)"
+  type        = map(string)
+  default     = {}
+}
+
+################################################################################
+# Secret(s)
+################################################################################
+
+variable "create_scram_secret_association" {
+  description = "Determines whether to create SASL/SCRAM secret association"
+  type        = bool
+  default     = false
+}
+
+variable "scram_secret_association_secret_arn_list" {
+  description = "List of AWS Secrets Manager secret ARNs to associate with SCRAM"
+  type        = list(string)
+  default     = []
+}
+
+################################################################################
+# CloudWatch Log Group
+################################################################################
+
 variable "create_cloudwatch_log_group" {
   description = "Determines whether to create a CloudWatch log group"
   type        = bool
@@ -174,39 +218,10 @@ variable "cloudwatch_log_group_kms_key_id" {
   default     = null
 }
 
-# Configuration
-variable "configuration_name" {
-  description = "Name of the configuration"
-  type        = string
-  default     = null
-}
+################################################################################
+# Storage Autoscaling
+################################################################################
 
-variable "configuration_description" {
-  description = "Description of the configuration"
-  type        = string
-  default     = null
-}
-
-variable "configuration_server_properties" {
-  description = "Contents of the server.properties file. Supported properties are documented in the [MSK Developer Guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-configuration-properties.html)"
-  type        = map(string)
-  default     = {}
-}
-
-# SCRAM secret association
-variable "create_scram_secret_association" {
-  description = "Determines whether to create SASL/SCRAM secret association"
-  type        = bool
-  default     = false
-}
-
-variable "scram_secret_association_secret_arn_list" {
-  description = "List of AWS Secrets Manager secret ARNs to associate with SCRAM"
-  type        = list(string)
-  default     = []
-}
-
-# Storage autoscaling
 variable "scaling_max_capacity" {
   description = "Max storage capacity for Kafka broker autoscaling"
   type        = number
@@ -225,7 +240,10 @@ variable "scaling_target_value" {
   default     = 70
 }
 
-# Schema registry
+################################################################################
+# Glue Schema Registry & Schema
+################################################################################
+
 variable "create_schema_registry" {
   description = "Determines whether to create a Glue schema registry for managing Avro schemas for the cluster"
   type        = bool
@@ -242,4 +260,50 @@ variable "schemas" {
   description = "A map schemas to be created within the schema registry"
   type        = map(any)
   default     = {}
+}
+
+################################################################################
+# Connect Custom Plugin
+################################################################################
+
+variable "connect_custom_plugins" {
+  description = "Map of custom plugin configuration details (map of maps)"
+  type        = any
+  default     = {}
+}
+
+variable "connect_custom_plugin_timeouts" {
+  description = "Timeout configurations for the connect custom plugins"
+  type        = map(string)
+  default = {
+    create = null
+  }
+}
+
+################################################################################
+# Connect Worker Configuration
+################################################################################
+
+variable "create_connect_worker_configuration" {
+  description = "Determines whether to create connect worker configuration"
+  type        = bool
+  default     = false
+}
+
+variable "connect_worker_config_name" {
+  description = "The name of the worker configuration"
+  type        = string
+  default     = null
+}
+
+variable "connect_worker_config_description" {
+  description = "A summary description of the worker configuration"
+  type        = string
+  default     = null
+}
+
+variable "connect_worker_config_properties_file_content" {
+  description = "Contents of connect-distributed.properties file. The value can be either base64 encoded or in raw format"
+  type        = string
+  default     = null
 }

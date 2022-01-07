@@ -4,7 +4,7 @@ provider "aws" {
 
 locals {
   region = "us-east-1"
-  name   = "example-${replace(basename(path.cwd), "_", "-")}"
+  name   = "ex-${replace(basename(path.cwd), "_", "-")}"
 
   secrets        = ["producer", "consumer"]
   bucket_postfix = "${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"

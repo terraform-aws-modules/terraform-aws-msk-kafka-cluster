@@ -1,8 +1,7 @@
 ################################################################################
-# MSK Cluster
+# Cluster
 ################################################################################
 
-# Cluster
 output "arn" {
   description = "Amazon Resource Name (ARN) of the MSK cluster"
   value       = module.msk_cluster.arn
@@ -48,7 +47,10 @@ output "zookeeper_connect_string_tls" {
   value       = module.msk_cluster.zookeeper_connect_string_tls
 }
 
+################################################################################
 # Configuration
+################################################################################
+
 output "configuration_arn" {
   description = "Amazon Resource Name (ARN) of the configuration"
   value       = module.msk_cluster.configuration_arn
@@ -59,8 +61,76 @@ output "configuration_latest_revision" {
   value       = module.msk_cluster.configuration_latest_revision
 }
 
-# SCRAM secret association
+################################################################################
+# Secret(s)
+################################################################################
+
 output "scram_secret_association_id" {
   description = "Amazon Resource Name (ARN) of the MSK cluster"
   value       = module.msk_cluster.scram_secret_association_id
+}
+
+################################################################################
+# CloudWatch Log Group
+################################################################################
+
+output "log_group_arn" {
+  description = "The Amazon Resource Name (ARN) specifying the log group"
+  value       = module.msk_cluster.log_group_arn
+}
+
+################################################################################
+# Storage Autoscaling
+################################################################################
+
+output "appautoscaling_policy_arn" {
+  description = "The ARN assigned by AWS to the scaling policy"
+  value       = module.msk_cluster.appautoscaling_policy_arn
+}
+
+output "appautoscaling_policy_name" {
+  description = "The scaling policy's name"
+  value       = module.msk_cluster.appautoscaling_policy_name
+}
+
+output "appautoscaling_policy_policy_type" {
+  description = "The scaling policy's type"
+  value       = module.msk_cluster.appautoscaling_policy_policy_type
+}
+
+################################################################################
+# Glue Schema Registry & Schema
+################################################################################
+
+output "schema_registries" {
+  description = "A map of output attributes for the schema registries created"
+  value       = module.msk_cluster.schema_registries
+}
+
+output "schemas" {
+  description = "A map of output attributes for the schemas created"
+  value       = module.msk_cluster.schemas
+}
+
+################################################################################
+# Connect Custom Plugin
+################################################################################
+
+output "connect_custom_plugins" {
+  description = "A map of output attributes for the connect custom plugins created"
+  value       = module.msk_cluster.connect_custom_plugins
+}
+
+################################################################################
+# Connect Worker Configuration
+################################################################################
+
+output "connect_worker_configuration_arn" {
+  description = "The Amazon Resource Name (ARN) of the worker configuration"
+  value       = module.msk_cluster.connect_worker_configuration_arn
+}
+
+output "connect_worker_configuration_latest_revision" {
+  description = "An ID of the latest successfully created revision of the worker configuration"
+  value       = module.msk_cluster.connect_worker_configuration_latest_revision
 }

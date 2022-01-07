@@ -2,6 +2,10 @@ locals {
   cloudwatch_log_group = var.create && var.create_cloudwatch_log_group ? aws_cloudwatch_log_group.this[0].name : var.cloudwatch_log_group_name
 }
 
+################################################################################
+# Cluster
+################################################################################
+
 resource "aws_msk_cluster" "this" {
   count = var.create ? 1 : 0
 
@@ -100,6 +104,10 @@ resource "aws_msk_cluster" "this" {
   tags = var.tags
 }
 
+################################################################################
+# Configuration
+################################################################################
+
 resource "aws_msk_configuration" "this" {
   count = var.create ? 1 : 0
 
@@ -109,12 +117,20 @@ resource "aws_msk_configuration" "this" {
   server_properties = join("\n", [for k, v in var.configuration_server_properties : format("%s = %s", k, v)])
 }
 
+################################################################################
+# Secret(s)
+################################################################################
+
 resource "aws_msk_scram_secret_association" "this" {
   count = var.create && var.create_scram_secret_association && var.client_authentication_sasl_scram ? 1 : 0
 
   cluster_arn     = aws_msk_cluster.this[0].arn
   secret_arn_list = var.scram_secret_association_secret_arn_list
 }
+
+################################################################################
+# CloudWatch Log Group
+################################################################################
 
 resource "aws_cloudwatch_log_group" "this" {
   count = var.create && var.create_cloudwatch_log_group ? 1 : 0
@@ -126,7 +142,10 @@ resource "aws_cloudwatch_log_group" "this" {
   tags = var.tags
 }
 
+################################################################################
 # Storage Autoscaling
+################################################################################
+
 resource "aws_appautoscaling_target" "this" {
   count = var.create ? 1 : 0
 
@@ -156,7 +175,10 @@ resource "aws_appautoscaling_policy" "this" {
   }
 }
 
-# Glue schema registry
+################################################################################
+# Glue Schema Registry & Schema
+################################################################################
+
 resource "aws_glue_registry" "this" {
   for_each = var.create && var.create_schema_registry ? var.schema_registries : {}
 

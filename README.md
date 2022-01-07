@@ -132,13 +132,13 @@ Security scanning results provided by Bridgecrew. Bridgecrew is the leading full
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.60 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.71 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.60 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.71 |
 
 ## Modules
 
@@ -156,6 +156,8 @@ No modules.
 | [aws_msk_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/msk_cluster) | resource |
 | [aws_msk_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/msk_configuration) | resource |
 | [aws_msk_scram_secret_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/msk_scram_secret_association) | resource |
+| [aws_mskconnect_custom_plugin.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mskconnect_custom_plugin) | resource |
+| [aws_mskconnect_worker_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mskconnect_worker_configuration) | resource |
 
 ## Inputs
 
@@ -175,8 +177,14 @@ No modules.
 | <a name="input_configuration_description"></a> [configuration\_description](#input\_configuration\_description) | Description of the configuration | `string` | `null` | no |
 | <a name="input_configuration_name"></a> [configuration\_name](#input\_configuration\_name) | Name of the configuration | `string` | `null` | no |
 | <a name="input_configuration_server_properties"></a> [configuration\_server\_properties](#input\_configuration\_server\_properties) | Contents of the server.properties file. Supported properties are documented in the [MSK Developer Guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-configuration-properties.html) | `map(string)` | `{}` | no |
+| <a name="input_connect_custom_plugin_timeouts"></a> [connect\_custom\_plugin\_timeouts](#input\_connect\_custom\_plugin\_timeouts) | Timeout configurations for the connect custom plugins | `map(string)` | <pre>{<br>  "create": null<br>}</pre> | no |
+| <a name="input_connect_custom_plugins"></a> [connect\_custom\_plugins](#input\_connect\_custom\_plugins) | Map of custom plugin configuration details (map of maps) | `any` | `{}` | no |
+| <a name="input_connect_worker_config_description"></a> [connect\_worker\_config\_description](#input\_connect\_worker\_config\_description) | A summary description of the worker configuration | `string` | `null` | no |
+| <a name="input_connect_worker_config_name"></a> [connect\_worker\_config\_name](#input\_connect\_worker\_config\_name) | The name of the worker configuration | `string` | `null` | no |
+| <a name="input_connect_worker_config_properties_file_content"></a> [connect\_worker\_config\_properties\_file\_content](#input\_connect\_worker\_config\_properties\_file\_content) | Contents of connect-distributed.properties file. The value can be either base64 encoded or in raw format | `string` | `null` | no |
 | <a name="input_create"></a> [create](#input\_create) | Determines whether cluster resources will be created | `bool` | `true` | no |
 | <a name="input_create_cloudwatch_log_group"></a> [create\_cloudwatch\_log\_group](#input\_create\_cloudwatch\_log\_group) | Determines whether to create a CloudWatch log group | `bool` | `true` | no |
+| <a name="input_create_connect_worker_configuration"></a> [create\_connect\_worker\_configuration](#input\_create\_connect\_worker\_configuration) | Determines whether to create connect worker configuration | `bool` | `false` | no |
 | <a name="input_create_schema_registry"></a> [create\_schema\_registry](#input\_create\_schema\_registry) | Determines whether to create a Glue schema registry for managing Avro schemas for the cluster | `bool` | `true` | no |
 | <a name="input_create_scram_secret_association"></a> [create\_scram\_secret\_association](#input\_create\_scram\_secret\_association) | Determines whether to create SASL/SCRAM secret association | `bool` | `false` | no |
 | <a name="input_encryption_at_rest_kms_key_arn"></a> [encryption\_at\_rest\_kms\_key\_arn](#input\_encryption\_at\_rest\_kms\_key\_arn) | You may specify a KMS key short ID or ARN (it will always output an ARN) to use for encrypting your data at rest. If no key is specified, an AWS managed KMS ('aws/msk' managed service) key will be used for encrypting the data at rest | `string` | `null` | no |
@@ -206,6 +214,9 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_appautoscaling_policy_arn"></a> [appautoscaling\_policy\_arn](#output\_appautoscaling\_policy\_arn) | The ARN assigned by AWS to the scaling policy |
+| <a name="output_appautoscaling_policy_name"></a> [appautoscaling\_policy\_name](#output\_appautoscaling\_policy\_name) | The scaling policy's name |
+| <a name="output_appautoscaling_policy_policy_type"></a> [appautoscaling\_policy\_policy\_type](#output\_appautoscaling\_policy\_policy\_type) | The scaling policy's type |
 | <a name="output_arn"></a> [arn](#output\_arn) | Amazon Resource Name (ARN) of the MSK cluster |
 | <a name="output_bootstrap_brokers"></a> [bootstrap\_brokers](#output\_bootstrap\_brokers) | Comma separated list of one or more hostname:port pairs of kafka brokers suitable to bootstrap connectivity to the kafka cluster |
 | <a name="output_bootstrap_brokers_plaintext"></a> [bootstrap\_brokers\_plaintext](#output\_bootstrap\_brokers\_plaintext) | Comma separated list of one or more hostname:port pairs of kafka brokers suitable to bootstrap connectivity to the kafka cluster. Contains a value if `encryption_in_transit_client_broker` is set to `PLAINTEXT` or `TLS_PLAINTEXT` |
@@ -214,12 +225,16 @@ No modules.
 | <a name="output_bootstrap_brokers_tls"></a> [bootstrap\_brokers\_tls](#output\_bootstrap\_brokers\_tls) | One or more DNS names (or IP addresses) and TLS port pairs. This attribute will have a value if `encryption_in_transit_client_broker` is set to `TLS_PLAINTEXT` or `TLS` |
 | <a name="output_configuration_arn"></a> [configuration\_arn](#output\_configuration\_arn) | Amazon Resource Name (ARN) of the configuration |
 | <a name="output_configuration_latest_revision"></a> [configuration\_latest\_revision](#output\_configuration\_latest\_revision) | Latest revision of the configuration |
+| <a name="output_connect_custom_plugins"></a> [connect\_custom\_plugins](#output\_connect\_custom\_plugins) | A map of output attributes for the connect custom plugins created |
+| <a name="output_connect_worker_configuration_arn"></a> [connect\_worker\_configuration\_arn](#output\_connect\_worker\_configuration\_arn) | The Amazon Resource Name (ARN) of the worker configuration |
+| <a name="output_connect_worker_configuration_latest_revision"></a> [connect\_worker\_configuration\_latest\_revision](#output\_connect\_worker\_configuration\_latest\_revision) | An ID of the latest successfully created revision of the worker configuration |
 | <a name="output_current_version"></a> [current\_version](#output\_current\_version) | Current version of the MSK Cluster used for updates, e.g. `K13V1IB3VIYZZH` |
+| <a name="output_log_group_arn"></a> [log\_group\_arn](#output\_log\_group\_arn) | The Amazon Resource Name (ARN) specifying the log group |
 | <a name="output_schema_registries"></a> [schema\_registries](#output\_schema\_registries) | A map of output attributes for the schema registries created |
 | <a name="output_schemas"></a> [schemas](#output\_schemas) | A map of output attributes for the schemas created |
 | <a name="output_scram_secret_association_id"></a> [scram\_secret\_association\_id](#output\_scram\_secret\_association\_id) | Amazon Resource Name (ARN) of the MSK cluster |
-| <a name="output_zookeeper_connect_string"></a> [zookeeper\_connect\_string](#output\_zookeeper\_connect\_string) | A comma separated list of one or more hostname:port pairs to use to connect to the Apache Zookeeper cluster. The returned values are sorted alphbetically |
-| <a name="output_zookeeper_connect_string_tls"></a> [zookeeper\_connect\_string\_tls](#output\_zookeeper\_connect\_string\_tls) | A comma separated list of one or more hostname:port pairs to use to connect to the Apache Zookeeper cluster via TLS. The returned values are sorted alphbetically |
+| <a name="output_zookeeper_connect_string"></a> [zookeeper\_connect\_string](#output\_zookeeper\_connect\_string) | A comma separated list of one or more hostname:port pairs to use to connect to the Apache Zookeeper cluster. The returned values are sorted alphabetically |
+| <a name="output_zookeeper_connect_string_tls"></a> [zookeeper\_connect\_string\_tls](#output\_zookeeper\_connect\_string\_tls) | A comma separated list of one or more hostname:port pairs to use to connect to the Apache Zookeeper cluster via TLS. The returned values are sorted alphabetically |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## License

@@ -1,8 +1,8 @@
-# Complete MSK Kafka Cluster Example
+# MSK Kafka Cluster Connect Example
 
 Configuration in this directory creates:
 
-- AWS MSK Kafka cluster using SASL/SCRAM authentication along with AWS Glue Registries and AWS Glue Schemas for use with the cluster
+- AWS MSK Kafka cluster with Kafka connect custom plugin(s) and worker configuration(s)
 
 ## Usage
 
@@ -23,21 +23,21 @@ Note that this example may create resources which will incur monetary charges on
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.71 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | >= 2.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.71 |
-| <a name="provider_random"></a> [random](#provider\_random) | >= 2.0 |
+| <a name="provider_null"></a> [null](#provider\_null) | >= 3.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_msk_cluster"></a> [msk\_cluster](#module\_msk\_cluster) | ../.. | n/a |
-| <a name="module_s3_logs_bucket"></a> [s3\_logs\_bucket](#module\_s3\_logs\_bucket) | terraform-aws-modules/s3-bucket/aws | ~> 2.0 |
+| <a name="module_s3_bucket"></a> [s3\_bucket](#module\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | ~> 2.0 |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4.0 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 3.0 |
 
@@ -45,11 +45,8 @@ Note that this example may create resources which will incur monetary charges on
 
 | Name | Type |
 |------|------|
-| [aws_kms_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
-| [aws_secretsmanager_secret.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
-| [aws_secretsmanager_secret_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_policy) | resource |
-| [aws_secretsmanager_secret_version.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
-| [random_pet.this](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
+| [aws_s3_bucket_object.debezium_connector](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_object) | resource |
+| [null_resource.debezium_connector](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
