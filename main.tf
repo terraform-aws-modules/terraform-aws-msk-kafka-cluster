@@ -18,20 +18,14 @@ resource "aws_msk_cluster" "this" {
     client_subnets  = var.broker_node_client_subnets
     instance_type   = var.broker_node_instance_type
     security_groups = var.broker_node_security_groups
-    
-    dynamic "storage_info" {
-      for_each = var.broker_node_ebs_volume_size != null ? [1] : []
-    
-      dynamic "ebs_storage_info" {
-        for_each = var.broker_node_ebs_volume_size != null ? [1] : []
-        
-        dynamic "provisioned_throughput" {
-          for_each = var.broker_node_ebs_provisioned_throughput_enabled ? [1] : []
 
-          enabled = var.broker_node_ebs_provisioned_throughput_enabled
+    storage_info {
+      ebs_storage_info {
+        provisioned_throughput {
+          enabled           = var.broker_node_ebs_provisioned_throughput_enabled
           volume_throughput = var.broker_node_ebs_provisioned_volume_throughput
         }
-        
+
         volume_size = var.broker_node_ebs_volume_size
       }
     }

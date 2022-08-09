@@ -132,13 +132,13 @@ Security scanning results provided by Bridgecrew. Bridgecrew is the leading full
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.71 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.15.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.71 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.15.0 |
 
 ## Modules
 
@@ -164,6 +164,8 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_broker_node_client_subnets"></a> [broker\_node\_client\_subnets](#input\_broker\_node\_client\_subnets) | A list of subnets to connect to in client VPC ([documentation](https://docs.aws.amazon.com/msk/1.0/apireference/clusters.html#clusters-prop-brokernodegroupinfo-clientsubnets)) | `list(string)` | `[]` | no |
+| <a name="input_broker_node_ebs_provisioned_throughput_enabled"></a> [broker\_node\_ebs\_provisioned\_throughput\_enabled](#input\_broker\_node\_ebs\_provisioned\_throughput\_enabled) | Controls whether provisioned throughput is enabled or not | `bool` | `false` | no |
+| <a name="input_broker_node_ebs_provisioned_volume_throughput"></a> [broker\_node\_ebs\_provisioned\_volume\_throughput](#input\_broker\_node\_ebs\_provisioned\_volume\_throughput) | Throughput value of the EBS volumes for the data drive on each kafka broker node in MiB per second ([documentation](https://docs.aws.amazon.com/msk/latest/developerguide/msk-provision-throughput.html#throughput-bottlenecks)) | `number` | `null` | no |
 | <a name="input_broker_node_ebs_volume_size"></a> [broker\_node\_ebs\_volume\_size](#input\_broker\_node\_ebs\_volume\_size) | The size in GiB of the EBS volume for the data drive on each broker node | `number` | `null` | no |
 | <a name="input_broker_node_instance_type"></a> [broker\_node\_instance\_type](#input\_broker\_node\_instance\_type) | Specify the instance type to use for the kafka brokers. e.g. kafka.m5.large. ([Pricing info](https://aws.amazon.com/msk/pricing/)) | `string` | `null` | no |
 | <a name="input_broker_node_security_groups"></a> [broker\_node\_security\_groups](#input\_broker\_node\_security\_groups) | A list of the security groups to associate with the elastic network interfaces to control who can communicate with the cluster | `list(string)` | `[]` | no |

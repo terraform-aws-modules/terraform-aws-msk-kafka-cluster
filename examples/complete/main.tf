@@ -119,7 +119,7 @@ resource "aws_secretsmanager_secret_policy" "this" {
 
 module "s3_logs_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   bucket = "${local.name}-${local.bucket_postfix}"
   acl    = "log-delivery-write"
@@ -159,9 +159,12 @@ module "msk_cluster" {
   enhanced_monitoring    = "PER_TOPIC_PER_PARTITION"
 
   broker_node_client_subnets  = module.vpc.private_subnets
-  broker_node_ebs_volume_size = 20
-  broker_node_instance_type   = "kafka.t3.small"
+  broker_node_instance_type   = "kafka.m5.4xlarge"
   broker_node_security_groups = [module.security_group.security_group_id]
+
+  broker_node_ebs_volume_size                    = 1000
+  broker_node_ebs_provisioned_throughput_enabled = true
+  broker_node_ebs_provisioned_volume_throughput  = 250
 
   encryption_in_transit_client_broker = "TLS"
   encryption_in_transit_in_cluster    = true
