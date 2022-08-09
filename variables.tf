@@ -44,6 +44,18 @@ variable "broker_node_ebs_volume_size" {
   default     = null
 }
 
+variable "broker_node_ebs_provisioned_throughput_enabled" {
+  description = "Controls whether provisioned throughput is enabled or not"
+  type        = bool
+  default     = false
+}
+
+variable "broker_node_ebs_provisioned_volume_throughput" {
+  description = "Throughput value of the EBS volumes for the data drive on each kafka broker node in MiB per second ([documentation](https://docs.aws.amazon.com/msk/latest/developerguide/msk-provision-throughput.html#throughput-bottlenecks))"
+  type        = number
+  default     = null
+}
+
 variable "broker_node_instance_type" {
   description = "Specify the instance type to use for the kafka brokers. e.g. kafka.m5.large. ([Pricing info](https://aws.amazon.com/msk/pricing/))"
   type        = string
