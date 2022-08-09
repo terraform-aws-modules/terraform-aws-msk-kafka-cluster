@@ -21,10 +21,10 @@ resource "aws_msk_cluster" "this" {
     security_groups = var.broker_node_security_groups
     
     dynamic "storage_info" {
-      for_each = var.broker_node_ebs_volume_size > 1 ? [1] : []
+      for_each = var.broker_node_ebs_volume_size != null ? [1] : []
     
       dynamic "ebs_storage_info" {
-        for_each = var.broker_node_ebs_volume_size > 1 ? [1] : []
+        for_each = var.broker_node_ebs_volume_size != null ? [1] : []
         
         dynamic "provisioned_throughput" {
           for_each = var.broker_node_ebs_provisioned_throughput_enabled ? [1] : []
