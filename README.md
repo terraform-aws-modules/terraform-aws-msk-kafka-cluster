@@ -16,9 +16,12 @@ module "msk_kafka_cluster" {
   enhanced_monitoring    = "PER_TOPIC_PER_PARTITION"
 
   broker_node_client_subnets  = ["subnet-12345678", "subnet-024681012", "subnet-87654321"]
-  broker_node_ebs_volume_size = 20
-  broker_node_instance_type   = "kafka.t3.small"
+  broker_node_instance_type   = "kafka.m5.4xlarge"
   broker_node_security_groups = ["sg-12345678"]
+
+  broker_node_ebs_volume_size                    = 1000
+  broker_node_ebs_provisioned_throughput_enabled = true
+  broker_node_ebs_provisioned_volume_throughput  = 250
 
   encryption_in_transit_client_broker = "TLS"
   encryption_in_transit_in_cluster    = true
