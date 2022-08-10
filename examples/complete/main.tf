@@ -186,6 +186,7 @@ module "msk_cluster" {
   scaling_max_capacity = 512
   scaling_target_value = 80
 
+  client_unauthenticated_access_enabled    = false
   client_authentication_sasl_scram         = true
   create_scram_secret_association          = true
   scram_secret_association_secret_arn_list = [for x in aws_secretsmanager_secret.this : x.arn]
