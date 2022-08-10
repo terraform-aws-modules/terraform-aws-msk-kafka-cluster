@@ -68,6 +68,12 @@ variable "broker_node_security_groups" {
   default     = []
 }
 
+variable "client_unauthenticated_access_enabled" {
+  description = "Controls whether unauthenticated access is enabled or not"
+  type        = bool
+  default     = false
+}
+
 variable "client_authentication_tls_certificate_authority_arns" {
   description = "List of ACM Certificate Authority Amazon Resource Names (ARNs)"
   type        = list(string)

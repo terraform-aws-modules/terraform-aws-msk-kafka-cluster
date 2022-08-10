@@ -35,6 +35,8 @@ resource "aws_msk_cluster" "this" {
     for_each = length(var.client_authentication_tls_certificate_authority_arns) > 0 || var.client_authentication_sasl_scram || var.client_authentication_sasl_iam ? [1] : []
 
     content {
+      unauthenticated = var.client_unauthenticated_access_enabled
+
       dynamic "tls" {
         for_each = length(var.client_authentication_tls_certificate_authority_arns) > 0 ? [1] : []
         content {
