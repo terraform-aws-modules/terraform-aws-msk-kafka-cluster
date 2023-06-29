@@ -1,7 +1,3 @@
-locals {
-  cloudwatch_log_group = var.create && var.create_cloudwatch_log_group ? aws_cloudwatch_log_group.this[0].name : var.cloudwatch_log_group_name
-}
-
 ################################################################################
 # Cluster
 ################################################################################
@@ -9,57 +5,116 @@ locals {
 resource "aws_msk_cluster" "this" {
   count = var.create ? 1 : 0
 
-  cluster_name           = var.name
-  kafka_version          = var.kafka_version
-  number_of_broker_nodes = var.number_of_broker_nodes
-  enhanced_monitoring    = var.enhanced_monitoring
-
   broker_node_group_info {
+    az_distribution = var.broker_node_az_distribution
     client_subnets  = var.broker_node_client_subnets
-    ebs_volume_size = var.broker_node_ebs_volume_size
+
+    dynamic "connectivity_info" {
+      for_each = length(var.broker_node_connectivity_info) > 0 ? [var.broker_node_connectivity_info] : []
+
+      content {
+        dynamic "public_access" {
+          for_each = try([connectivity_info.value.public_access], [])
+
+          content {
+            type = try(public_access.value.type, null)
+          }
+        }
+      }
+    }
+
     instance_type   = var.broker_node_instance_type
     security_groups = var.broker_node_security_groups
-  }
 
-  dynamic "client_authentication" {
-    for_each = length(var.client_authentication_tls_certificate_authority_arns) > 0 || var.client_authentication_sasl_scram || var.client_authentication_sasl_iam ? [1] : []
+    dynamic "storage_info" {
+      for_each = length(var.broker_node_storage_info) > 0 ? [var.broker_node_storage_info] : []
 
-    content {
-      dynamic "tls" {
-        for_each = length(var.client_authentication_tls_certificate_authority_arns) > 0 ? [1] : []
-        content {
-          certificate_authority_arns = var.client_authentication_tls_certificate_authority_arns
-        }
-      }
+      content {
+        dynamic "ebs_storage_info" {
+          for_each = try([storage_info.value.ebs_storage_info], [])
 
-      dynamic "sasl" {
-        for_each = var.client_authentication_sasl_iam ? [1] : []
-        content {
-          iam = var.client_authentication_sasl_iam
-        }
-      }
+          content {
+            dynamic "provisioned_throughput" {
+              for_each = try([ebs_storage_info.value.provisioned_throughput], [])
 
-      dynamic "sasl" {
-        for_each = var.client_authentication_sasl_scram ? [1] : []
-        content {
-          scram = var.client_authentication_sasl_scram
+              content {
+                enabled           = try(provisioned_throughput.value.enabled, null)
+                volume_throughput = try(provisioned_throughput.value.volume_throughput, null)
+              }
+            }
+
+            volume_size = try(ebs_storage_info.value.volume_size, 64)
+          }
         }
       }
     }
   }
 
+  dynamic "client_authentication" {
+    for_each = length(var.client_authentication) > 0 ? [var.client_authentication] : []
+
+    content {
+      dynamic "sasl" {
+        for_each = try([client_authentication.value.sasl], [])
+
+        content {
+          iam   = try(sasl.value.iam, null)
+          scram = try(sasl.value.scram, null)
+        }
+      }
+
+      dynamic "tls" {
+        for_each = try([client_authentication.value.tls], [])
+
+        content {
+          certificate_authority_arns = try(tls.value.certificate_authority_arns, null)
+        }
+      }
+
+      unauthenticated = try(client_authentication.value.unauthenticated, null)
+    }
+  }
+
+  cluster_name = var.name
+
   configuration_info {
-    arn      = aws_msk_configuration.this[0].arn
-    revision = aws_msk_configuration.this[0].latest_revision
+    arn      = var.create_configuration ? aws_msk_configuration.this[0].arn : var.configuration_arn
+    revision = var.create_configuration ? aws_msk_configuration.this[0].latest_revision : var.configuration_revision
   }
 
   encryption_info {
+    encryption_at_rest_kms_key_arn = var.encryption_at_rest_kms_key_arn
+
     encryption_in_transit {
       client_broker = var.encryption_in_transit_client_broker
       in_cluster    = var.encryption_in_transit_in_cluster
     }
-    encryption_at_rest_kms_key_arn = var.encryption_at_rest_kms_key_arn
   }
+
+  enhanced_monitoring = var.enhanced_monitoring
+  kafka_version       = var.kafka_version
+
+  logging_info {
+    broker_logs {
+      cloudwatch_logs {
+        enabled   = var.cloudwatch_logs_enabled
+        log_group = var.cloudwatch_logs_enabled ? local.cloudwatch_log_group : null
+      }
+
+      firehose {
+        enabled         = var.firehose_logs_enabled
+        delivery_stream = var.firehose_delivery_stream
+      }
+
+      s3 {
+        bucket  = var.s3_logs_bucket
+        enabled = var.s3_logs_enabled
+        prefix  = var.s3_logs_prefix
+      }
+    }
+  }
+
+  number_of_broker_nodes = var.number_of_broker_nodes
 
   open_monitoring {
     prometheus {
@@ -72,33 +127,19 @@ resource "aws_msk_cluster" "this" {
     }
   }
 
-  logging_info {
-    broker_logs {
-      cloudwatch_logs {
-        enabled   = var.cloudwatch_logs_enabled
-        log_group = var.cloudwatch_logs_enabled ? local.cloudwatch_log_group : null
-      }
-      firehose {
-        enabled         = var.firehose_logs_enabled
-        delivery_stream = var.firehose_delivery_stream
-      }
-      s3 {
-        enabled = var.s3_logs_enabled
-        bucket  = var.s3_logs_bucket
-        prefix  = var.s3_logs_prefix
-      }
-    }
-  }
+  storage_mode = var.storage_mode
 
   timeouts {
-    create = lookup(var.timeouts, "create", null)
-    update = lookup(var.timeouts, "update", null)
-    delete = lookup(var.timeouts, "delete", null)
+    create = try(var.timeouts.create, null)
+    update = try(var.timeouts.update, null)
+    delete = try(var.timeouts.delete, null)
   }
 
   # required for appautoscaling
   lifecycle {
-    ignore_changes = [broker_node_group_info[0].ebs_volume_size]
+    ignore_changes = [
+      broker_node_group_info[0].storage_info[0].ebs_storage_info[0].volume_size,
+    ]
   }
 
   tags = var.tags
@@ -109,7 +150,7 @@ resource "aws_msk_cluster" "this" {
 ################################################################################
 
 resource "aws_msk_configuration" "this" {
-  count = var.create ? 1 : 0
+  count = var.create && var.create_configuration ? 1 : 0
 
   name              = coalesce(var.configuration_name, var.name)
   description       = var.configuration_description
@@ -122,7 +163,7 @@ resource "aws_msk_configuration" "this" {
 ################################################################################
 
 resource "aws_msk_scram_secret_association" "this" {
-  count = var.create && var.create_scram_secret_association && var.client_authentication_sasl_scram ? 1 : 0
+  count = var.create && var.create_scram_secret_association && try(var.client_authentication.sasl.scram, false) ? 1 : 0
 
   cluster_arn     = aws_msk_cluster.this[0].arn
   secret_arn_list = var.scram_secret_association_secret_arn_list
@@ -131,6 +172,10 @@ resource "aws_msk_scram_secret_association" "this" {
 ################################################################################
 # CloudWatch Log Group
 ################################################################################
+
+locals {
+  cloudwatch_log_group = var.create && var.create_cloudwatch_log_group ? aws_cloudwatch_log_group.this[0].name : var.cloudwatch_log_group_name
+}
 
 resource "aws_cloudwatch_log_group" "this" {
   count = var.create && var.create_cloudwatch_log_group ? 1 : 0
@@ -180,23 +225,23 @@ resource "aws_appautoscaling_policy" "this" {
 ################################################################################
 
 resource "aws_glue_registry" "this" {
-  for_each = var.create && var.create_schema_registry ? var.schema_registries : {}
+  for_each = { for k, v in var.schema_registries : k => v if var.create && var.create_schema_registry }
 
   registry_name = each.value.name
-  description   = lookup(each.value, "description", null)
+  description   = try(each.value.description, null)
 
-  tags = merge(var.tags, lookup(each.value, "tags", {}))
+  tags = merge(var.tags, try(each.value.tags, {}))
 }
 
 resource "aws_glue_schema" "this" {
-  for_each = var.create && var.create_schema_registry ? var.schemas : {}
+  for_each = { for k, v in var.schemas : k => v if var.create && var.create_schema_registry }
 
   schema_name       = each.value.schema_name
-  description       = lookup(each.value, "description", null)
+  description       = try(each.value.description, null)
   registry_arn      = aws_glue_registry.this[each.value.schema_registry_name].arn
   data_format       = "AVRO"
   compatibility     = each.value.compatibility
   schema_definition = each.value.schema_definition
 
-  tags = merge(var.tags, lookup(each.value, "tags", {}))
+  tags = merge(var.tags, try(each.value.tags, {}))
 }
