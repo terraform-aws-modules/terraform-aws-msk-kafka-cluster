@@ -127,4 +127,3 @@ module "msk_kafka_cluster" {
 ### State Move Commands
 
 No Terraform state manipulation is required for this upgrade.
-
