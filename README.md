@@ -1,14 +1,23 @@
 # AWS MSK Kafka Cluster Terraform module
 
+## ⚠️ Module has moved to `terraform-aws-modules`
+
+This module has moved to the terraform-aws-modules organization. Users will need to update their module source:
+
+```diff
+- source = "clowdhaus/msk-kafka-cluster/aws"
++ source = "terraform-aws-modules/msk-kafka-cluster/aws"
+```
+
 Terraform module which creates AWS MSK (Managed Streaming for Kafka) resources.
 
 ## Usage
 
-See [`examples`](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/tree/main/examples) directory for working examples to reference:
+See [`examples`](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/tree/master/examples) directory for working examples to reference:
 
 ```hcl
 module "msk_kafka_cluster" {
-  source = "clowdhaus/msk-kafka-cluster/aws"
+  source = "terraform-aws-modules/msk-kafka-cluster/aws"
 
   name                   = local.name
   kafka_version          = "3.4.0"
@@ -115,10 +124,10 @@ module "msk_kafka_cluster" {
 
 ## Examples
 
-Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/tree/main/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
+Examples codified under the [`examples`](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/tree/master/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
 
-- [Basic](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/tree/main/examples/basic)
-- [Complete](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/tree/main/examples/complete)
+- [Basic](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/tree/master/examples/basic)
+- [Complete](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/tree/master/examples/complete)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -237,4 +246,4 @@ No modules.
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/blob/main/LICENSE).
+Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/blob/master/LICENSE).

@@ -63,7 +63,7 @@ Note: Only the relevant changes are shown for brevity
 
 ```hcl
 module "msk_kafka_cluster" {
-  source  = "clowdhaus/msk-kafka-cluster/aws"
+  source  = "terraform-aws-modules/msk-kafka-cluster/aws"
   version = "1.2"
 
   broker_node_ebs_volume_size = 20
@@ -72,7 +72,7 @@ module "msk_kafka_cluster" {
 
   tags = {
     Blueprint  = local.name
-    GithubRepo = "github.com/clowdhaus/terraform-aws-msk-kafka-cluster"
+    GithubRepo = "github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster"
   }
 }
 ```
@@ -81,7 +81,7 @@ module "msk_kafka_cluster" {
 
 ```hcl
 module "msk_kafka_cluster" {
-  source  = "clowdhaus/msk-kafka-cluster/aws"
+  source  = "terraform-aws-modules/msk-kafka-cluster/aws"
   version = "2.0"
 
   broker_node_storage_info = {
@@ -94,7 +94,7 @@ module "msk_kafka_cluster" {
 
   tags = {
     Blueprint  = local.name
-    GithubRepo = "github.com/clowdhaus/terraform-aws-msk-kafka-cluster"
+    GithubRepo = "github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster"
   }
 }
 ```
@@ -103,7 +103,7 @@ module "msk_kafka_cluster" {
 
 ```diff
 module "msk_kafka_cluster" {
-  source  = "clowdhaus/msk-kafka-cluster/aws"
+  source  = "terraform-aws-modules/msk-kafka-cluster/aws"
 -  version = "1.2"
 +  version = "2.0"
 
@@ -119,7 +119,7 @@ module "msk_kafka_cluster" {
 
   tags = {
     Blueprint  = local.name
-    GithubRepo = "github.com/clowdhaus/terraform-aws-msk-kafka-cluster"
+    GithubRepo = "github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster"
   }
 }
 ```
