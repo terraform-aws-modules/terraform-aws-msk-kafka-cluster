@@ -1,15 +1,8 @@
 # AWS MSK Kafka Cluster Terraform module
 
-## ⚠️ Module has moved to `terraform-aws-modules`
-
-This module has moved to the terraform-aws-modules organization. Users will need to update their module source:
-
-```diff
-- source = "clowdhaus/msk-kafka-cluster/aws"
-+ source = "terraform-aws-modules/msk-kafka-cluster/aws"
-```
-
 Terraform module which creates AWS MSK (Managed Streaming for Kafka) resources.
+
+[![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
 ## Usage
 
