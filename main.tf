@@ -156,6 +156,10 @@ resource "aws_msk_configuration" "this" {
   description       = var.configuration_description
   kafka_versions    = [var.kafka_version]
   server_properties = join("\n", [for k, v in var.configuration_server_properties : format("%s = %s", k, v)])
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 ################################################################################
