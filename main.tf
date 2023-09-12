@@ -20,6 +20,25 @@ resource "aws_msk_cluster" "this" {
             type = try(public_access.value.type, null)
           }
         }
+
+        dynamic "vpc_connectivity" {
+          for_each = try([connectivity_info.value.vpc_connectivity], [])
+
+          content {
+            client_authentication {
+              tls = try(vpc_connectivity.value.tls, null)
+
+              dynamic "sasl" {
+                for_each = try([vpc_connectivity.value.sasl], [])
+
+                content {
+                  iam   = try(sasl.value.iam, null)
+                  scram = try(sasl.value.scram, null)
+                }
+              }
+            }
+          }
+        }
       }
     }
 
@@ -244,4 +263,18 @@ resource "aws_glue_schema" "this" {
   schema_definition = each.value.schema_definition
 
   tags = merge(var.tags, try(each.value.tags, {}))
+}
+
+################################################################################
+# VPC Connections
+################################################################################
+
+resource "aws_msk_vpc_connection" "this" {
+  for_each = { for k, v in var.vpc_connections : k => v if var.create }
+
+  authentication     = each.value.authentication
+  target_cluster_arn = aws_msk_cluster.this[0].arn
+  vpc_id             = each.value.vpc_id
+  client_subnets     = each.value.client_subnets
+  security_groups    = each.value.security_groups
 }

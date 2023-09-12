@@ -331,3 +331,13 @@ variable "connect_worker_config_properties_file_content" {
   type        = string
   default     = null
 }
+
+################################################################################
+# VPC Connections
+################################################################################
+
+variable "vpc_connections" {
+  description = "Map of VPC Connection details"
+  type        = map(any)
+  default     = {}
+}

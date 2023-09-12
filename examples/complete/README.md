@@ -40,6 +40,8 @@ Note that this example may create resources which will incur monetary charges on
 | <a name="module_s3_logs_bucket"></a> [s3\_logs\_bucket](#module\_s3\_logs\_bucket) | terraform-aws-modules/s3-bucket/aws | ~> 3.0 |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 5.0 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 5.0 |
+| <a name="module_vpc_connection"></a> [vpc\_connection](#module\_vpc\_connection) | terraform-aws-modules/vpc/aws | ~> 5.0 |
+| <a name="module_vpc_connection_security_group"></a> [vpc\_connection\_security\_group](#module\_vpc\_connection\_security\_group) | terraform-aws-modules/security-group/aws | ~> 5.0 |
 
 ## Resources
 
