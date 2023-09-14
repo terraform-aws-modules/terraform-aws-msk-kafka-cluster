@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.2.0...v2.3.0) (2023-09-14)
+
+
+### Features
+
+* Support disabling storage autoscaling ([#15](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/15)) ([174d261](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/174d26146749150920a96dce15e65dbd075cf88b))
+
 ## [2.2.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.1.0...v2.2.0) (2023-09-14)
 
 
