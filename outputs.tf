@@ -53,6 +53,15 @@ output "zookeeper_connect_string_tls" {
 }
 
 ################################################################################
+# VPC Connection
+################################################################################
+
+output "vpc_connections" {
+  description = "A map of output attributes for the VPC connections created"
+  value       = aws_msk_vpc_connection.this
+}
+
+################################################################################
 # Configuration
 ################################################################################
 

@@ -25,16 +25,20 @@ resource "aws_msk_cluster" "this" {
           for_each = try([connectivity_info.value.vpc_connectivity], [])
 
           content {
-            client_authentication {
-              tls = try(vpc_connectivity.value.tls, null)
+            dynamic "client_authentication" {
+              for_each = try([vpc_connectivity.value.client_authentication], [])
 
-              dynamic "sasl" {
-                for_each = try([vpc_connectivity.value.sasl], [])
+              content {
+                dynamic "sasl" {
+                  for_each = try([client_authentication.value.sasl], [])
 
-                content {
-                  iam   = try(sasl.value.iam, null)
-                  scram = try(sasl.value.scram, null)
+                  content {
+                    iam   = try(sasl.value.iam, null)
+                    scram = try(sasl.value.scram, null)
+                  }
                 }
+
+                tls = try(client_authentication.value.tls, null)
               }
             }
           }
@@ -165,6 +169,22 @@ resource "aws_msk_cluster" "this" {
 }
 
 ################################################################################
+# VPC Connection
+################################################################################
+
+resource "aws_msk_vpc_connection" "this" {
+  for_each = { for k, v in var.vpc_connections : k => v if var.create }
+
+  authentication     = each.value.authentication
+  client_subnets     = each.value.client_subnets
+  security_groups    = each.value.security_groups
+  target_cluster_arn = aws_msk_cluster.this[0].arn
+  vpc_id             = each.value.vpc_id
+
+  tags = merge(var.tags, try(each.value.tags, {}))
+}
+
+################################################################################
 # Configuration
 ################################################################################
 
@@ -263,18 +283,4 @@ resource "aws_glue_schema" "this" {
   schema_definition = each.value.schema_definition
 
   tags = merge(var.tags, try(each.value.tags, {}))
-}
-
-################################################################################
-# VPC Connections
-################################################################################
-
-resource "aws_msk_vpc_connection" "this" {
-  for_each = { for k, v in var.vpc_connections : k => v if var.create }
-
-  authentication     = each.value.authentication
-  target_cluster_arn = aws_msk_cluster.this[0].arn
-  vpc_id             = each.value.vpc_id
-  client_subnets     = each.value.client_subnets
-  security_groups    = each.value.security_groups
 }

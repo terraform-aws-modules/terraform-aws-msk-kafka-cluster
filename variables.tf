@@ -159,6 +159,16 @@ variable "timeouts" {
 }
 
 ################################################################################
+# VPC Connection
+################################################################################
+
+variable "vpc_connections" {
+  description = "Map of VPC Connections to create"
+  type        = any
+  default     = {}
+}
+
+################################################################################
 # Configuration
 ################################################################################
 
@@ -330,14 +340,4 @@ variable "connect_worker_config_properties_file_content" {
   description = "Contents of connect-distributed.properties file. The value can be either base64 encoded or in raw format"
   type        = string
   default     = null
-}
-
-################################################################################
-# VPC Connections
-################################################################################
-
-variable "vpc_connections" {
-  description = "Map of VPC Connection details"
-  type        = map(any)
-  default     = {}
 }

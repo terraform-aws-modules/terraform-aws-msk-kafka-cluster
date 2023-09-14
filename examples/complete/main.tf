@@ -33,21 +33,25 @@ module "msk_cluster" {
   number_of_broker_nodes = 3
   enhanced_monitoring    = "PER_TOPIC_PER_PARTITION"
 
-  broker_node_client_subnets  = module.vpc.private_subnets
+  broker_node_client_subnets = module.vpc.private_subnets
+  broker_node_connectivity_info = {
+    public_access = {
+      type = "DISABLED"
+    }
+    vpc_connectivity = {
+      client_authentication = {
+        tls = false
+        sasl = {
+          iam   = false
+          scram = true
+        }
+      }
+    }
+  }
   broker_node_instance_type   = "kafka.m5.large"
   broker_node_security_groups = [module.security_group.security_group_id]
   broker_node_storage_info = {
     ebs_storage_info = { volume_size = 100 }
-  }
-  broker_node_connectivity_info = {
-    public_access = "DISABLED"
-    vpc_connectivity = {
-      tls = false
-      sasl = {
-        iam   = false
-        scram = true
-      }
-    }
   }
 
   vpc_connections = {
