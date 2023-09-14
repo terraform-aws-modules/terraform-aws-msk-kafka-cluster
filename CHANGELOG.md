@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.1.0...v2.2.0) (2023-09-14)
+
+
+### Features
+
+* Add support for multi-vpc private connectivity ([#13](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/13)) ([5612974](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/561297428f995d38b51d2a437b4834f9930c02d5))
+
 ## [2.1.0](https://github.com/clowdhaus/terraform-aws-msk-kafka-cluster/compare/v2.0.0...v2.1.0) (2023-06-29)
 
 

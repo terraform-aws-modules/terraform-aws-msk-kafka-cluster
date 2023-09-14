@@ -8,8 +8,9 @@ locals {
   name   = "ex-${basename(path.cwd)}"
   region = "us-east-1"
 
-  vpc_cidr = "10.0.0.0/16"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  vpc_cidr            = "10.0.0.0/16"
+  vpc_connection_cidr = "10.1.0.0/16"
+  azs                 = slice(data.aws_availability_zones.available.names, 0, 3)
 
   secrets = ["producer", "consumer"]
 
@@ -32,11 +33,34 @@ module "msk_cluster" {
   number_of_broker_nodes = 3
   enhanced_monitoring    = "PER_TOPIC_PER_PARTITION"
 
-  broker_node_client_subnets  = module.vpc.private_subnets
-  broker_node_instance_type   = "kafka.t3.small"
+  broker_node_client_subnets = module.vpc.private_subnets
+  broker_node_connectivity_info = {
+    public_access = {
+      type = "DISABLED"
+    }
+    vpc_connectivity = {
+      client_authentication = {
+        tls = false
+        sasl = {
+          iam   = false
+          scram = true
+        }
+      }
+    }
+  }
+  broker_node_instance_type   = "kafka.m5.large"
   broker_node_security_groups = [module.security_group.security_group_id]
   broker_node_storage_info = {
     ebs_storage_info = { volume_size = 100 }
+  }
+
+  vpc_connections = {
+    connection_one = {
+      authentication  = "SASL_SCRAM"
+      vpc_id          = module.vpc_connection.vpc_id
+      client_subnets  = module.vpc_connection.private_subnets
+      security_groups = [module.vpc_connection_security_group.security_group_id]
+    }
   }
 
   encryption_in_transit_client_broker = "TLS"
@@ -230,6 +254,46 @@ module "s3_logs_bucket" {
       }
     }
   }
+
+  tags = local.tags
+}
+
+################################################################################
+# VPC Connections
+################################################################################
+
+module "vpc_connection_security_group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 5.0"
+
+  name        = "${local.name}-vpc-connection"
+  description = "Security group for ${local.name} VPC Connection"
+  vpc_id      = module.vpc_connection.vpc_id
+
+  ingress_cidr_blocks = module.vpc_connection.private_subnets_cidr_blocks
+  ingress_rules = [
+    "kafka-broker-tcp",
+    "kafka-broker-tls-tcp"
+  ]
+
+  tags = local.tags
+}
+
+module "vpc_connection" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
+
+  name = "${local.name}-vpc-connection"
+  cidr = local.vpc_connection_cidr
+
+  azs              = local.azs
+  public_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_connection_cidr, 8, k)]
+  private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_connection_cidr, 8, k + 3)]
+  database_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_connection_cidr, 8, k + 6)]
+
+  create_database_subnet_group = true
+  enable_nat_gateway           = true
+  single_nat_gateway           = true
 
   tags = local.tags
 }
