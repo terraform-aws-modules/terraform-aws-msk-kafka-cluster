@@ -192,7 +192,7 @@ resource "aws_cloudwatch_log_group" "this" {
 ################################################################################
 
 resource "aws_appautoscaling_target" "this" {
-  count = var.create ? 1 : 0
+  count = var.create && var.create_appautoscaling_target ? 1 : 0
 
   max_capacity       = var.scaling_max_capacity
   min_capacity       = 1
@@ -203,7 +203,7 @@ resource "aws_appautoscaling_target" "this" {
 }
 
 resource "aws_appautoscaling_policy" "this" {
-  count = var.create ? 1 : 0
+  count = var.create && var.create_appautoscaling_policy && var.create_appautoscaling_target ? 1 : 0
 
   name               = "${var.name}-broker-storage-scaling"
   policy_type        = "TargetTrackingScaling"

@@ -246,6 +246,18 @@ variable "cloudwatch_log_group_kms_key_id" {
 # Storage Autoscaling
 ################################################################################
 
+variable "create_appautoscaling_target" {
+  description = "Determines whether app auto scaling target will be created. Should be true if create_appautoscaling_policy is true."
+  type        = bool
+  default     = true
+}
+
+variable "create_appautoscaling_policy" {
+  description = "Determines whether app auto scaling policy will be created."
+  type        = bool
+  default     = true
+}
+
 variable "scaling_max_capacity" {
   description = "Max storage capacity for Kafka broker autoscaling"
   type        = number
