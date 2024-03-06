@@ -80,8 +80,11 @@ module "msk_cluster" {
   s3_logs_bucket          = module.s3_logs_bucket.s3_bucket_id
   s3_logs_prefix          = local.name
 
-  scaling_max_capacity = 512
-  scaling_target_value = 80
+  scaling_max_capacity     = 512
+  scaling_target_value     = 80
+  scaling_in_cooldown      = 0
+  scaling_out_cooldown     = 0
+  scaling_disable_scale_in = false
 
   client_authentication = {
     sasl = { scram = true }

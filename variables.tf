@@ -280,6 +280,24 @@ variable "scaling_target_value" {
   default     = 70
 }
 
+variable "scaling_disable_scale_in" {
+  description = "Whether scale in by the target tracking policy is disabled. If the value is true, scale in is disabled and the target tracking policy won't remove capacity from the scalable resource. Otherwise, scale in is enabled and the target tracking policy can remove capacity from the scalable resource."
+  type        = bool
+  default     = false
+}
+
+variable "scaling_in_cooldown" {
+  description = "Amount of time, in seconds, after a scale in activity completes before another scale in activity can start"
+  type        = number
+  default     = 0
+}
+
+variable "scaling_out_cooldown" {
+  description = "Amount of time, in seconds, after a scale out activity completes before another scale out activity can start"
+  type        = number
+  default     = 0
+}
+
 ################################################################################
 # Glue Schema Registry & Schema
 ################################################################################

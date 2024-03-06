@@ -255,7 +255,10 @@ resource "aws_appautoscaling_policy" "this" {
       predefined_metric_type = "KafkaBrokerStorageUtilization"
     }
 
-    target_value = var.scaling_target_value
+    target_value       = var.scaling_target_value
+    disable_scale_in   = var.scaling_disable_scale_in
+    scale_in_cooldown  = var.scaling_in_cooldown
+    scale_out_cooldown = var.scaling_out_cooldown
   }
 }
 
