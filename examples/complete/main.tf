@@ -3,8 +3,6 @@ provider "aws" {
 }
 
 data "aws_availability_zones" "available" {}
-data "aws_caller_identity" "current" {}
-data "aws_partition" "current" {}
 
 locals {
   name   = "ex-${basename(path.cwd)}"
@@ -64,28 +62,6 @@ module "msk_cluster" {
       security_groups = [module.vpc_connection_security_group.security_group_id]
     }
   }
-
-  create_cluster_policy = true
-  cluster_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : [
-            "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root"
-          ]
-        },
-        "Action" : [
-          "kafka:CreateVpcConnection",
-          "kafka:GetBootstrapBrokers",
-          "kafka:DescribeCluster",
-          "kafka:DescribeClusterV2"
-        ],
-        "Resource" : module.msk_cluster.arn
-      }
-    ]
-  })
 
   encryption_in_transit_client_broker = "TLS"
   encryption_in_transit_in_cluster    = true
