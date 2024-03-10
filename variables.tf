@@ -225,6 +225,22 @@ variable "scram_secret_association_secret_arn_list" {
 }
 
 ################################################################################
+# Cluster Policy
+################################################################################
+
+variable "create_cluster_policy" {
+  description = "Determines whether to create an MSK cluster policy"
+  type        = bool
+  default     = false
+}
+
+variable "cluster_policy" {
+  description = "Resource policy for cluster"
+  type        = string
+  default     = null
+}
+
+################################################################################
 # CloudWatch Log Group
 ################################################################################
 

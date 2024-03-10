@@ -185,6 +185,17 @@ resource "aws_msk_vpc_connection" "this" {
 }
 
 ################################################################################
+# Cluster Policy
+################################################################################
+
+resource "aws_msk_cluster_policy" "this" {
+  count = var.create && var.create_cluster_policy ? 1 : 0
+
+  cluster_arn = aws_msk_cluster.this[0].arn
+  policy      = var.cluster_policy
+}
+
+################################################################################
 # Configuration
 ################################################################################
 
