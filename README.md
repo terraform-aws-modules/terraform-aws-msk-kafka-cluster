@@ -156,6 +156,7 @@ No modules.
 | [aws_msk_vpc_connection.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/msk_vpc_connection) | resource |
 | [aws_mskconnect_custom_plugin.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mskconnect_custom_plugin) | resource |
 | [aws_mskconnect_worker_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mskconnect_worker_configuration) | resource |
+| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
@@ -172,7 +173,9 @@ No modules.
 | <a name="input_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#input\_cloudwatch\_log\_group\_name) | Name of the Cloudwatch Log Group to deliver logs to | `string` | `null` | no |
 | <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | Specifies the number of days you want to retain log events in the log group | `number` | `0` | no |
 | <a name="input_cloudwatch_logs_enabled"></a> [cloudwatch\_logs\_enabled](#input\_cloudwatch\_logs\_enabled) | Indicates whether you want to enable or disable streaming broker logs to Cloudwatch Logs | `bool` | `false` | no |
-| <a name="input_cluster_policy"></a> [cluster\_policy](#input\_cluster\_policy) | Resource policy for cluster | `string` | `null` | no |
+| <a name="input_cluster_override_policy_documents"></a> [cluster\_override\_policy\_documents](#input\_cluster\_override\_policy\_documents) | Override policy documents for cluster policy | `list(string)` | `null` | no |
+| <a name="input_cluster_policy_statements"></a> [cluster\_policy\_statements](#input\_cluster\_policy\_statements) | Map of policy statements for cluster policy | `any` | `null` | no |
+| <a name="input_cluster_source_policy_documents"></a> [cluster\_source\_policy\_documents](#input\_cluster\_source\_policy\_documents) | Source policy documents for cluster policy | `list(string)` | `null` | no |
 | <a name="input_configuration_arn"></a> [configuration\_arn](#input\_configuration\_arn) | ARN of an externally created configuration to use | `string` | `null` | no |
 | <a name="input_configuration_description"></a> [configuration\_description](#input\_configuration\_description) | Description of the configuration | `string` | `null` | no |
 | <a name="input_configuration_name"></a> [configuration\_name](#input\_configuration\_name) | Name of the configuration | `string` | `null` | no |
