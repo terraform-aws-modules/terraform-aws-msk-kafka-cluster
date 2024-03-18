@@ -129,14 +129,14 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.12 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | 3.6.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.6 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.12 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.6 |
 
 ## Modules
 
@@ -157,7 +157,7 @@ No modules.
 | [aws_msk_vpc_connection.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/msk_vpc_connection) | resource |
 | [aws_mskconnect_custom_plugin.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mskconnect_custom_plugin) | resource |
 | [aws_mskconnect_worker_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mskconnect_worker_configuration) | resource |
-| [random_id.this](https://registry.terraform.io/providers/hashicorp/random/3.6.0/docs/resources/id) | resource |
+| [random_id.this](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 
 ## Inputs
 

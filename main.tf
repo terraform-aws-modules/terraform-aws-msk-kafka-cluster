@@ -189,13 +189,15 @@ resource "aws_msk_vpc_connection" "this" {
 ################################################################################
 
 resource "random_id" "this" {
+  count = var.create && var.create_configuration ? 1 : 0
+
   byte_length = 8
 }
 
 resource "aws_msk_configuration" "this" {
   count = var.create && var.create_configuration ? 1 : 0
 
-  name              = format("%s-%s", coalesce(var.configuration_name, var.name), random_id.this.dec)
+  name              = format("%s-%s", coalesce(var.configuration_name, var.name), random_id.this[0].dec)
   description       = var.configuration_description
   kafka_versions    = [var.kafka_version]
   server_properties = join("\n", [for k, v in var.configuration_server_properties : format("%s = %s", k, v)])
