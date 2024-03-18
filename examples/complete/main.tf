@@ -4,6 +4,8 @@ provider "aws" {
 
 data "aws_availability_zones" "available" {}
 
+data "aws_caller_identity" "current" {}
+
 locals {
   name   = "ex-${basename(path.cwd)}"
   region = "us-east-1"
@@ -136,6 +138,43 @@ module "msk_cluster" {
     }
   }
 
+  # cross account cluster policy
+  create_cluster_policy = true
+  cluster_policy_statements = {
+    basic = {
+      sid = "basic"
+      principals = [
+        {
+          type = "AWS"
+          # identifiers would be cross account IDs to provide access to the cluster
+          identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+        }
+      ]
+      actions = [
+        "kafka:CreateVpcConnection",
+        "kafka:GetBootstrapBrokers",
+        "kafka:DescribeCluster",
+        "kafka:DescribeClusterV2"
+      ]
+      effect = "Allow"
+    }
+    firehose = {
+      sid = "firehose"
+      principals = [
+        {
+          type        = "Service"
+          identifiers = ["firehose.amazonaws.com"]
+        }
+      ]
+      actions = [
+        "kafka:CreateVpcConnection",
+        "kafka:GetBootstrapBrokers",
+        "kafka:DescribeCluster",
+        "kafka:DescribeClusterV2"
+      ]
+    }
+  }
+
   tags = local.tags
 }
 
@@ -177,7 +216,8 @@ module "security_group" {
   ingress_cidr_blocks = module.vpc.private_subnets_cidr_blocks
   ingress_rules = [
     "kafka-broker-tcp",
-    "kafka-broker-tls-tcp"
+    "kafka-broker-tls-tcp",
+    "kafka-broker-sasl-scram-tcp"
   ]
 
   tags = local.tags
@@ -274,6 +314,16 @@ module "vpc_connection_security_group" {
   ingress_rules = [
     "kafka-broker-tcp",
     "kafka-broker-tls-tcp"
+  ]
+  #  multi-VPC network load balancer is listening on the 14001-14100 port ranges
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 14001
+      to_port     = 14003
+      protocol    = "tcp"
+      description = "Service name"
+      cidr_blocks = module.vpc_connection.vpc_cidr_block
+    }
   ]
 
   tags = local.tags
