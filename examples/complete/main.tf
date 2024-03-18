@@ -315,6 +315,7 @@ module "vpc_connection_security_group" {
     "kafka-broker-tcp",
     "kafka-broker-tls-tcp"
   ]
+  #  multi-VPC network load balancer is listening on the 14001-14100 port ranges
   ingress_with_cidr_blocks = [
     {
       from_port   = 14001
