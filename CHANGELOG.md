@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.5.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.4.0...v2.5.0) (2024-03-18)
+
+
+### Features
+
+* Allow MSK configuration changes on running clusters ([#17](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/17)) ([4f31418](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/4f314184fda3cc60197be4054470aaaecccc7392))
+
 ## [2.4.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.3.1...v2.4.0) (2024-03-18)
 
 
