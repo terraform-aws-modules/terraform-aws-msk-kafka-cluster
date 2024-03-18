@@ -29,7 +29,7 @@ module "msk_cluster" {
   source = "../.."
 
   name                   = local.name
-  kafka_version          = "3.4.0"
+  kafka_version          = "3.5.1"
   number_of_broker_nodes = 3
 
   broker_node_client_subnets  = module.vpc.private_subnets
