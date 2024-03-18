@@ -32,6 +32,11 @@ output "bootstrap_brokers_tls" {
   value       = module.msk_cluster.bootstrap_brokers_tls
 }
 
+output "cluster_uuid" {
+  description = "UUID of the MSK cluster, for use in IAM policies"
+  value       = module.msk_cluster.cluster_uuid
+}
+
 output "current_version" {
   description = "Current version of the MSK Cluster used for updates, e.g. `K13V1IB3VIYZZH`"
   value       = module.msk_cluster.current_version

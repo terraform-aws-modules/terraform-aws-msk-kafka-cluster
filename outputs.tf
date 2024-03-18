@@ -37,6 +37,11 @@ output "bootstrap_brokers_tls" {
   value       = try(aws_msk_cluster.this[0].bootstrap_brokers_tls, null)
 }
 
+output "cluster_uuid" {
+  description = "UUID of the MSK cluster, for use in IAM policies"
+  value       = try(aws_msk_cluster.this[0].cluster_uuid, null)
+}
+
 output "current_version" {
   description = "Current version of the MSK Cluster used for updates, e.g. `K13V1IB3VIYZZH`"
   value       = try(aws_msk_cluster.this[0].current_version, null)
