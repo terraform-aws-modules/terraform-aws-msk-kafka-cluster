@@ -162,6 +162,7 @@ resource "aws_msk_cluster" "this" {
   lifecycle {
     ignore_changes = [
       broker_node_group_info[0].storage_info[0].ebs_storage_info[0].volume_size,
+      client_authentication[0].tls
     ]
   }
 
