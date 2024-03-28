@@ -158,6 +158,12 @@ variable "timeouts" {
   default     = {}
 }
 
+variable "lifecycle_ignore_changes" {
+  description = "A list of lifecycle rules to ignore"
+  type        = list(string)
+  default     = []
+}
+
 ################################################################################
 # VPC Connection
 ################################################################################
