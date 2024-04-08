@@ -375,3 +375,25 @@ variable "connect_worker_config_properties_file_content" {
   type        = string
   default     = null
 }
+
+################################################################################
+# Serverless Cluster
+################################################################################
+
+variable "create_serverless_cluster" {
+  description = "Determine whether to create a serverless cluster"
+  type        = bool
+  default     = false
+}
+
+variable "serverless_cluster_iam_auth_enabled" {
+  description = "Whether SASL/IAM authentication is enabled or not"
+  type        = bool
+  default     = null
+}
+
+variable "serverless_vpc_config" {
+  description = "Serverless cluster VPC configurations"
+  type        = map(any)
+  default     = {}
+}
