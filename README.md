@@ -219,8 +219,7 @@ No modules.
 | <a name="input_schema_registries"></a> [schema\_registries](#input\_schema\_registries) | A map of schema registries to be created | `map(any)` | `{}` | no |
 | <a name="input_schemas"></a> [schemas](#input\_schemas) | A map schemas to be created within the schema registry | `map(any)` | `{}` | no |
 | <a name="input_scram_secret_association_secret_arn_list"></a> [scram\_secret\_association\_secret\_arn\_list](#input\_scram\_secret\_association\_secret\_arn\_list) | List of AWS Secrets Manager secret ARNs to associate with SCRAM | `list(string)` | `[]` | no |
-| <a name="input_serverless_cluster_iam_auth_enabled"></a> [serverless\_cluster\_iam\_auth\_enabled](#input\_serverless\_cluster\_iam\_auth\_enabled) | Whether SASL/IAM authentication is enabled or not | `bool` | `null` | no |
-| <a name="input_serverless_vpc_config"></a> [serverless\_vpc\_config](#input\_serverless\_vpc\_config) | Serverless cluster VPC configurations | `map(any)` | `{}` | no |
+| <a name="input_serverless_vpc_config"></a> [serverless\_vpc\_config](#input\_serverless\_vpc\_config) | Serverless cluster VPC configurations | `any` | `{}` | no |
 | <a name="input_storage_mode"></a> [storage\_mode](#input\_storage\_mode) | Controls storage mode for supported storage tiers. Valid values are: `LOCAL` or `TIERED` | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources created | `map(string)` | `{}` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Create, update, and delete timeout configurations for the cluster | `map(string)` | `{}` | no |

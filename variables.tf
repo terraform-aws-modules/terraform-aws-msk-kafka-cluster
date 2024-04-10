@@ -386,14 +386,8 @@ variable "create_serverless_cluster" {
   default     = false
 }
 
-variable "serverless_cluster_iam_auth_enabled" {
-  description = "Whether SASL/IAM authentication is enabled or not"
-  type        = bool
-  default     = null
-}
-
 variable "serverless_vpc_config" {
   description = "Serverless cluster VPC configurations"
-  type        = map(any)
+  type        = any
   default     = {}
 }

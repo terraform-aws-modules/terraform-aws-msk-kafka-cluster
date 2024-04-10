@@ -189,14 +189,14 @@ resource "aws_msk_vpc_connection" "this" {
 ################################################################################
 
 resource "aws_msk_cluster_policy" "this" {
-  count = var.create && var.create_cluster_policy && !var.create_serverless_cluster ? 1 : 0
+  count = var.create && var.create_cluster_policy ? 1 : 0
 
-  cluster_arn = aws_msk_cluster.this[0].arn
+  cluster_arn = !var.create_serverless_cluster ? aws_msk_cluster.this[0].arn : aws_msk_serverless_cluster.this[0].arn
   policy      = data.aws_iam_policy_document.this[0].json
 }
 
 data "aws_iam_policy_document" "this" {
-  count = var.create && var.create_cluster_policy && !var.create_serverless_cluster ? 1 : 0
+  count = var.create && var.create_cluster_policy ? 1 : 0
 
   source_policy_documents   = var.cluster_source_policy_documents
   override_policy_documents = var.cluster_override_policy_documents
@@ -209,7 +209,7 @@ data "aws_iam_policy_document" "this" {
       actions       = try(statement.value.actions, null)
       not_actions   = try(statement.value.not_actions, null)
       effect        = try(statement.value.effect, null)
-      resources     = try(statement.value.resources, [aws_msk_cluster.this[0].arn])
+      resources     = try(statement.value.resources, [aws_msk_cluster.this[0].arn], [aws_msk_serverless_cluster.this[0].arn])
       not_resources = try(statement.value.not_resources, null)
 
       dynamic "principals" {
@@ -282,11 +282,11 @@ resource "aws_msk_scram_secret_association" "this" {
 ################################################################################
 
 locals {
-  cloudwatch_log_group = var.create && var.create_cloudwatch_log_group ? aws_cloudwatch_log_group.this[0].name : var.cloudwatch_log_group_name
+  cloudwatch_log_group = var.create && var.create_cloudwatch_log_group && !var.create_serverless_cluster ? aws_cloudwatch_log_group.this[0].name : var.cloudwatch_log_group_name
 }
 
 resource "aws_cloudwatch_log_group" "this" {
-  count = var.create && var.create_cloudwatch_log_group ? 1 : 0
+  count = var.create && var.create_cloudwatch_log_group && !var.create_serverless_cluster ? 1 : 0
 
   name              = coalesce(var.cloudwatch_log_group_name, "/aws/msk/${var.name}")
   retention_in_days = var.cloudwatch_log_group_retention_in_days
@@ -364,7 +364,7 @@ resource "aws_msk_serverless_cluster" "this" {
   client_authentication {
     sasl {
       iam {
-        enabled = var.serverless_cluster_iam_auth_enabled
+        enabled = true
       }
     }
   }
@@ -372,7 +372,7 @@ resource "aws_msk_serverless_cluster" "this" {
   cluster_name = var.name
 
   dynamic "vpc_config" {
-    for_each = try(var.serverless_vpc_config, [])
+    for_each = try([var.serverless_vpc_config], [])
 
     content {
       security_group_ids = try(vpc_config.value.security_group_ids, null)

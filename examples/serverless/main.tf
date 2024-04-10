@@ -21,13 +21,30 @@ locals {
 module "msk_serverless_cluster" {
   source = "../.."
 
-  name                                = local.name
-  create_serverless_cluster           = true
-  serverless_cluster_iam_auth_enabled = true
+  name                      = local.name
+  create_serverless_cluster = true
 
   serverless_vpc_config = {
     security_group_ids = [module.security_group.security_group_id]
     subnet_ids         = module.vpc.private_subnets
+  }
+
+  create_cluster_policy = true
+  cluster_policy_statements = {
+    firehose = {
+      sid = "firehose"
+      principals = [
+        {
+          type        = "Service"
+          identifiers = ["firehose.amazonaws.com"]
+        }
+      ]
+      actions = [
+        "kafka:CreateVpcConnection",
+        "kafka:GetBootstrapBrokers",
+        "kafka:DescribeClusterV2"
+      ]
+    }
   }
 }
 
@@ -64,8 +81,7 @@ module "security_group" {
 
   ingress_cidr_blocks = module.vpc.private_subnets_cidr_blocks
   ingress_rules = [
-    "kafka-broker-tcp",
-    "kafka-broker-tls-tcp",
+    "kafka-broker-sasl-iam-tcp"
   ]
 
   tags = local.tags
