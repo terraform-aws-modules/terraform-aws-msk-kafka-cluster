@@ -1,4 +1,4 @@
-output "arn" {
+output "serverless_arn" {
   description = "The ARN of the serverless cluster"
   value       = module.msk_serverless_cluster.serverless_arn
 }
