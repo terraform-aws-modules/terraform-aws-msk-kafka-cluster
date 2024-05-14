@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.6.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.5.0...v2.6.0) (2024-05-14)
+
+
+### Features
+
+* MSK serverless cluster ([#28](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/28)) ([3635a3f](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/3635a3fa9d0fdaf72519e35aadbe1462c1dddf6e))
+
 ## [2.5.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.4.0...v2.5.0) (2024-03-18)
 
 
