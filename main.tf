@@ -209,7 +209,7 @@ data "aws_iam_policy_document" "this" {
       actions       = try(statement.value.actions, null)
       not_actions   = try(statement.value.not_actions, null)
       effect        = try(statement.value.effect, null)
-      resources     = try(statement.value.resources, [aws_msk_cluster.this[0].arn], [aws_msk_serverless_cluster.this[0].arn])
+      resources     = try(statement.value.resources, [aws_msk_cluster.this[0].arn])
       not_resources = try(statement.value.not_resources, null)
 
       dynamic "principals" {
