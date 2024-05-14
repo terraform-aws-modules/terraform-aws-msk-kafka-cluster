@@ -3,7 +3,7 @@
 ################################################################################
 
 resource "aws_msk_cluster" "this" {
-  count = var.create && !var.create_serverless_cluster ? 1 : 0
+  count = var.create ? 1 : 0
 
   broker_node_group_info {
     az_distribution = var.broker_node_az_distribution
@@ -173,7 +173,7 @@ resource "aws_msk_cluster" "this" {
 ################################################################################
 
 resource "aws_msk_vpc_connection" "this" {
-  for_each = { for k, v in var.vpc_connections : k => v if var.create && !var.create_serverless_cluster }
+  for_each = { for k, v in var.vpc_connections : k => v if var.create }
 
   authentication     = each.value.authentication
   client_subnets     = each.value.client_subnets
@@ -191,7 +191,7 @@ resource "aws_msk_vpc_connection" "this" {
 resource "aws_msk_cluster_policy" "this" {
   count = var.create && var.create_cluster_policy ? 1 : 0
 
-  cluster_arn = !var.create_serverless_cluster ? aws_msk_cluster.this[0].arn : aws_msk_serverless_cluster.this[0].arn
+  cluster_arn = aws_msk_cluster.this[0].arn
   policy      = data.aws_iam_policy_document.this[0].json
 }
 
@@ -248,13 +248,13 @@ data "aws_iam_policy_document" "this" {
 ################################################################################
 
 resource "random_id" "this" {
-  count = var.create && var.create_configuration && !var.create_serverless_cluster ? 1 : 0
+  count = var.create && var.create_configuration ? 1 : 0
 
   byte_length = 8
 }
 
 resource "aws_msk_configuration" "this" {
-  count = var.create && var.create_configuration && !var.create_serverless_cluster ? 1 : 0
+  count = var.create && var.create_configuration ? 1 : 0
 
   name              = format("%s-%s", coalesce(var.configuration_name, var.name), random_id.this[0].dec)
   description       = var.configuration_description
@@ -271,7 +271,7 @@ resource "aws_msk_configuration" "this" {
 ################################################################################
 
 resource "aws_msk_scram_secret_association" "this" {
-  count = var.create && var.create_scram_secret_association && try(var.client_authentication.sasl.scram, false) && !var.create_serverless_cluster ? 1 : 0
+  count = var.create && var.create_scram_secret_association && try(var.client_authentication.sasl.scram, false) ? 1 : 0
 
   cluster_arn     = aws_msk_cluster.this[0].arn
   secret_arn_list = var.scram_secret_association_secret_arn_list
@@ -282,11 +282,11 @@ resource "aws_msk_scram_secret_association" "this" {
 ################################################################################
 
 locals {
-  cloudwatch_log_group = var.create && var.create_cloudwatch_log_group && !var.create_serverless_cluster ? aws_cloudwatch_log_group.this[0].name : var.cloudwatch_log_group_name
+  cloudwatch_log_group = var.create && var.create_cloudwatch_log_group ? aws_cloudwatch_log_group.this[0].name : var.cloudwatch_log_group_name
 }
 
 resource "aws_cloudwatch_log_group" "this" {
-  count = var.create && var.create_cloudwatch_log_group && !var.create_serverless_cluster ? 1 : 0
+  count = var.create && var.create_cloudwatch_log_group ? 1 : 0
 
   name              = coalesce(var.cloudwatch_log_group_name, "/aws/msk/${var.name}")
   retention_in_days = var.cloudwatch_log_group_retention_in_days
@@ -300,7 +300,7 @@ resource "aws_cloudwatch_log_group" "this" {
 ################################################################################
 
 resource "aws_appautoscaling_target" "this" {
-  count = var.create && var.enable_storage_autoscaling && !var.create_serverless_cluster ? 1 : 0
+  count = var.create && var.enable_storage_autoscaling ? 1 : 0
 
   max_capacity       = var.scaling_max_capacity
   min_capacity       = 1
@@ -311,7 +311,7 @@ resource "aws_appautoscaling_target" "this" {
 }
 
 resource "aws_appautoscaling_policy" "this" {
-  count = var.create && var.enable_storage_autoscaling && !var.create_serverless_cluster ? 1 : 0
+  count = var.create && var.enable_storage_autoscaling ? 1 : 0
 
   name               = "${var.name}-broker-storage-scaling"
   policy_type        = "TargetTrackingScaling"
@@ -352,33 +352,4 @@ resource "aws_glue_schema" "this" {
   schema_definition = each.value.schema_definition
 
   tags = merge(var.tags, try(each.value.tags, {}))
-}
-
-################################################################################
-# Serverless Cluster
-################################################################################
-
-resource "aws_msk_serverless_cluster" "this" {
-  count = var.create && var.create_serverless_cluster ? 1 : 0
-
-  client_authentication {
-    sasl {
-      iam {
-        enabled = true
-      }
-    }
-  }
-
-  cluster_name = var.name
-
-  dynamic "vpc_config" {
-    for_each = try([var.serverless_vpc_config], [])
-
-    content {
-      security_group_ids = try(vpc_config.value.security_group_ids, null)
-      subnet_ids         = vpc_config.value.subnet_ids
-    }
-  }
-
-  tags = var.tags
 }

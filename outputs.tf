@@ -153,17 +153,3 @@ output "connect_worker_configuration_latest_revision" {
   description = "An ID of the latest successfully created revision of the worker configuration"
   value       = try(aws_mskconnect_worker_configuration.this[0].latest_revision, null)
 }
-
-################################################################################
-# Serverless Cluster
-################################################################################
-
-output "serverless_arn" {
-  description = "The ARN of the serverless cluster"
-  value       = try(aws_msk_serverless_cluster.this[0].arn, null)
-}
-
-output "serverless_cluster_uuid" {
-  description = "UUID of the serverless cluster, for use in IAM policies"
-  value       = try(aws_msk_serverless_cluster.this[0].cluster_uuid, null)
-}

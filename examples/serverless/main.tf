@@ -19,15 +19,12 @@ locals {
 }
 
 module "msk_serverless_cluster" {
-  source = "../.."
+  source = "../../modules/serverless"
 
-  name                      = local.name
-  create_serverless_cluster = true
+  name = local.name
 
-  serverless_vpc_config = {
-    security_group_ids = [module.security_group.security_group_id]
-    subnet_ids         = module.vpc.private_subnets
-  }
+  security_group_ids = [module.security_group.security_group_id]
+  subnet_ids         = module.vpc.private_subnets
 
   create_cluster_policy = true
   cluster_policy_statements = {
