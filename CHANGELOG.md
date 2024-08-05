@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.7.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.6.0...v2.7.0) (2024-08-05)
+
+
+### Features
+
+* Allow Glue Schema registry data format to be configurable ([#32](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/32)) ([3f4806e](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/3f4806ee70d49f74163028f38abb14bd4971dfce))
+
 ## [2.6.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.5.0...v2.6.0) (2024-05-14)
 
 
