@@ -347,7 +347,7 @@ resource "aws_glue_schema" "this" {
   schema_name       = each.value.schema_name
   description       = try(each.value.description, null)
   registry_arn      = aws_glue_registry.this[each.value.schema_registry_name].arn
-  data_format       = "AVRO"
+  data_format       = try(each.value.data_format, "AVRO")
   compatibility     = each.value.compatibility
   schema_definition = each.value.schema_definition
 
