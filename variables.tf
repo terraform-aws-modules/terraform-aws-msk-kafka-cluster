@@ -98,6 +98,13 @@ variable "cloudwatch_logs_enabled" {
   default     = false
 }
 
+variable "cloudwatch_log_group_class" {
+  description = "Specifies the log class of the log group. Possible values are: STANDARD or INFREQUENT_ACCESS."
+  type        = bool
+  default     = null
+}
+
+
 variable "firehose_logs_enabled" {
   description = "Indicates whether you want to enable or disable streaming broker logs to Kinesis Data Firehose"
   type        = bool

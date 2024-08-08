@@ -291,6 +291,7 @@ resource "aws_cloudwatch_log_group" "this" {
   name              = coalesce(var.cloudwatch_log_group_name, "/aws/msk/${var.name}")
   retention_in_days = var.cloudwatch_log_group_retention_in_days
   kms_key_id        = var.cloudwatch_log_group_kms_key_id
+  log_group_class   = var.cloudwatch_log_group_class
 
   tags = var.tags
 }
