@@ -161,6 +161,7 @@ resource "aws_msk_cluster" "this" {
   # required for appautoscaling
   lifecycle {
     ignore_changes = [
+      current_version,
       broker_node_group_info[0].storage_info[0].ebs_storage_info[0].volume_size,
     ]
   }
