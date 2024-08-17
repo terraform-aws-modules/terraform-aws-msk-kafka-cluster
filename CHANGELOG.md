@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.8.1](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.8.0...v2.8.1) (2024-08-17)
+
+
+### Bug Fixes
+
+* Make `cloudwatch_log_group_class` type string ([#38](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/38)) ([92b7d8b](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/92b7d8bd09970374e2011e347e557865fd1fd34f))
+
 ## [2.8.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.7.0...v2.8.0) (2024-08-08)
 
 
