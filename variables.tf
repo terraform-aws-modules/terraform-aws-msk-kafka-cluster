@@ -100,7 +100,7 @@ variable "cloudwatch_logs_enabled" {
 
 variable "cloudwatch_log_group_class" {
   description = "Specifies the log class of the log group. Possible values are: STANDARD or INFREQUENT_ACCESS."
-  type        = bool
+  type        = string
   default     = null
 }
 
