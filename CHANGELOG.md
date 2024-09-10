@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.8.1...v2.9.0) (2024-09-10)
+
+
+### Features
+
+* Create a new configuration when the Kafka version is changed to avoid `ConflictException: A resource with this name already exists` errors ([#40](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/40)) ([d5b4e6c](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/d5b4e6cac2f1f0619d15e6c4f4b26f764ff3ecd2))
+
 ## [2.8.1](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.8.0...v2.8.1) (2024-08-17)
 
 
