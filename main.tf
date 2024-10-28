@@ -313,6 +313,8 @@ resource "aws_appautoscaling_target" "this" {
   resource_id        = aws_msk_cluster.this[0].arn
   scalable_dimension = "kafka:broker-storage:VolumeSize"
   service_namespace  = "kafka"
+
+  tags = var.tags
 }
 
 resource "aws_appautoscaling_policy" "this" {
