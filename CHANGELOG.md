@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.10.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.9.0...v2.10.0) (2024-11-26)
+
+
+### Features
+
+* Add tags to AppAutoscaling target ([#44](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/44)) ([f0857f3](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/f0857f3341ce4bb869ea11e7ad2a6d5a98d0149d))
+
+
+### Bug Fixes
+
+* Update CI workflow versions to latest ([#42](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/42)) ([d0682a9](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/d0682a9670b564f27697d5c0900147df1332a7b8))
+
 ## [2.9.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.8.1...v2.9.0) (2024-09-10)
 
 
