@@ -37,6 +37,11 @@ output "bootstrap_brokers_tls" {
   value       = try(aws_msk_cluster.this[0].bootstrap_brokers_tls, null)
 }
 
+output "cluster_name" {
+  description = "Name of the MSK cluster"
+  value       = var.name
+}
+
 output "cluster_uuid" {
   description = "UUID of the MSK cluster, for use in IAM policies"
   value       = try(aws_msk_cluster.this[0].cluster_uuid, null)
