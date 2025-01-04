@@ -32,6 +32,11 @@ output "bootstrap_brokers_tls" {
   value       = module.msk_cluster.bootstrap_brokers_tls
 }
 
+output "cluster_name" {
+  description = "Name of the MSK cluster"
+  value       = module.msk_cluster.cluster_name
+}
+
 output "cluster_uuid" {
   description = "UUID of the MSK cluster, for use in IAM policies"
   value       = module.msk_cluster.cluster_uuid
