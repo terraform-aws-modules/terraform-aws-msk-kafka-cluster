@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.11.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.10.0...v2.11.0) (2025-01-06)
+
+
+### Features
+
+* Add cluster name to outputs ([#45](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/45)) ([c2ac138](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/c2ac138dc8e98e5b05d66a85249917d5dc057225))
+
 ## [2.10.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.9.0...v2.10.0) (2024-11-26)
 
 
