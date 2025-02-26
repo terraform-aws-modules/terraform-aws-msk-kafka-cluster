@@ -117,22 +117,25 @@ resource "aws_msk_cluster" "this" {
   enhanced_monitoring = var.enhanced_monitoring
   kafka_version       = var.kafka_version
 
-  logging_info {
-    broker_logs {
-      cloudwatch_logs {
-        enabled   = var.cloudwatch_logs_enabled
-        log_group = var.cloudwatch_logs_enabled ? local.cloudwatch_log_group : null
-      }
+  dynamic "logging_info" {
+    for_each = startswith(var.broker_node_instance_type, "express") ? [] : ["BROKER_LOGS"]
+    content {
+      broker_logs {
+        cloudwatch_logs {
+          enabled   = var.cloudwatch_logs_enabled
+          log_group = var.cloudwatch_logs_enabled ? local.cloudwatch_log_group : null
+        }
 
-      firehose {
-        enabled         = var.firehose_logs_enabled
-        delivery_stream = var.firehose_delivery_stream
-      }
+        firehose {
+          enabled         = var.firehose_logs_enabled
+          delivery_stream = var.firehose_delivery_stream
+        }
 
-      s3 {
-        bucket  = var.s3_logs_bucket
-        enabled = var.s3_logs_enabled
-        prefix  = var.s3_logs_prefix
+        s3 {
+          bucket  = var.s3_logs_bucket
+          enabled = var.s3_logs_enabled
+          prefix  = var.s3_logs_prefix
+        }
       }
     }
   }
