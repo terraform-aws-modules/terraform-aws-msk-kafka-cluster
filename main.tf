@@ -118,7 +118,7 @@ resource "aws_msk_cluster" "this" {
   kafka_version       = var.kafka_version
 
   dynamic "logging_info" {
-    for_each = startswith(var.broker_node_instance_type, "express") ? [] : ["BROKER_LOGS"]
+    for_each = startswith(var.broker_node_instance_type, "express") ? [] : [true]
     content {
       broker_logs {
         cloudwatch_logs {
