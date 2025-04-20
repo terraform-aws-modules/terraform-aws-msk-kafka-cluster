@@ -32,6 +32,21 @@ output "bootstrap_brokers_tls" {
   value       = module.msk_cluster.bootstrap_brokers_tls
 }
 
+output "bootstrap_brokers_public_sasl_iam" {
+  description = "One or more DNS names (or IP addresses) and SASL IAM port pairs. This attribute will have a value if encryption_info.0.encryption_in_transit.0.client_broker is set to TLS_PLAINTEXT or TLS and client_authentication.0.sasl.0.iam is set to true and broker_node_group_info.0.connectivity_info.0.public_access.0.type is set to SERVICE_PROVIDED_EIPS and the cluster fulfill all other requirements for public access."
+  value       = module.msk_cluster.bootstrap_brokers_public_sasl_iam
+}
+
+output "bootstrap_brokers_public_sasl_scram" {
+  description = "One or more DNS names (or IP addresses) and SASL SCRAM port pairs. This attribute will have a value if encryption_info.0.encryption_in_transit.0.client_broker is set to TLS_PLAINTEXT or TLS and client_authentication.0.sasl.0.scram is set to true and broker_node_group_info.0.connectivity_info.0.public_access.0.type is set to SERVICE_PROVIDED_EIPS and the cluster fulfill all other requirements for public access."
+  value       = module.msk_cluster.bootstrap_brokers_public_sasl_scram
+}
+
+output "bootstrap_brokers_public_tls" {
+  description = "One or more DNS names (or IP addresses) and TLS port pairs. This attribute will have a value if encryption_info.0.encryption_in_transit.0.client_broker is set to TLS_PLAINTEXT or TLS and broker_node_group_info.0.connectivity_info.0.public_access.0.type is set to SERVICE_PROVIDED_EIPS and the cluster fulfill all other requirements for public access."
+  value       = module.msk_cluster.bootstrap_brokers_public_tls
+}
+
 output "cluster_name" {
   description = "Name of the MSK cluster"
   value       = module.msk_cluster.cluster_name
