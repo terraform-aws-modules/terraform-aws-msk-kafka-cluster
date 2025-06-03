@@ -61,6 +61,21 @@ output "bootstrap_brokers_public_tls" {
   value       = try(aws_msk_cluster.this[0].bootstrap_brokers_public_tls, null)
 }
 
+output "bootstrap_brokers_vpc_connectivity_sasl_iam" {
+  description = "One or more DNS names (or IP addresses) and SASL IAM port pairs for VPC connectivity"
+  value       = try(aws_msk_cluster.this[0].bootstrap_brokers_vpc_connectivity_sasl_iam, null)
+}
+
+output "bootstrap_brokers_vpc_connectivity_sasl_scram" {
+  description = "One or more DNS names (or IP addresses) and SASL SCRAM port pairs for VPC connectivity"
+  value       = try(aws_msk_cluster.this[0].bootstrap_brokers_vpc_connectivity_sasl_scram, null)
+}
+
+output "bootstrap_brokers_vpc_connectivity_tls" {
+  description = "One or more DNS names (or IP addresses) and TLS port pairs for VPC connectivity"
+  value       = try(aws_msk_cluster.this[0].bootstrap_brokers_vpc_connectivity_tls, null)
+}
+
 output "cluster_name" {
   description = "Name of the MSK cluster"
   value       = try(aws_msk_cluster.this[0].cluster_name, null)
