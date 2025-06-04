@@ -52,6 +52,26 @@ output "bootstrap_brokers_public_tls" {
   value       = module.msk_cluster.bootstrap_brokers_public_tls
 }
 
+output "bootstrap_brokers_vpc_connectivity" {
+  description = "Comma separated list of one or more hostname:port pairs of Kafka brokers suitable to bootstrap connectivity to the Kafka cluster"
+  value       = module.msk_cluster.bootstrap_brokers_vpc_connectivity
+}
+
+output "bootstrap_brokers_vpc_connectivity_sasl_iam" {
+  description = "One or more DNS names (or IP addresses) and SASL IAM port pairs for VPC connectivity"
+  value       = module.msk_cluster.bootstrap_brokers_vpc_connectivity_sasl_iam
+}
+
+output "bootstrap_brokers_vpc_connectivity_sasl_scram" {
+  description = "One or more DNS names (or IP addresses) and SASL SCRAM port pairs for VPC connectivity"
+  value       = module.msk_cluster.bootstrap_brokers_vpc_connectivity_sasl_scram
+}
+
+output "bootstrap_brokers_vpc_connectivity_tls" {
+  description = "One or more DNS names (or IP addresses) and TLS port pairs for VPC connectivity"
+  value       = module.msk_cluster.bootstrap_brokers_vpc_connectivity_tls
+}
+
 output "cluster_name" {
   description = "Name of the MSK cluster"
   value       = module.msk_cluster.cluster_name
