@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.13.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.12.0...v2.13.0) (2025-06-04)
+
+
+### Features
+
+* Add `bootstrap_brokers_vpc_connectivity_*` to outputs ([#54](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/54)) ([09c3e84](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/09c3e841fcda3a01c5f0b63d4510fc76f7716375))
+
 ## [2.12.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.11.1...v2.12.0) (2025-04-22)
 
 
