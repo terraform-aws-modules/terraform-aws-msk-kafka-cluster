@@ -127,15 +127,15 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.30 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.22.1 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.6 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.30 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.22.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.6 |
 
 ## Modules
@@ -167,26 +167,26 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_broker_node_az_distribution"></a> [broker\_node\_az\_distribution](#input\_broker\_node\_az\_distribution) | The distribution of broker nodes across availability zones ([documentation](https://docs.aws.amazon.com/msk/1.0/apireference/clusters.html#clusters-model-brokerazdistribution)). Currently the only valid value is `DEFAULT` | `string` | `null` | no |
 | <a name="input_broker_node_client_subnets"></a> [broker\_node\_client\_subnets](#input\_broker\_node\_client\_subnets) | A list of subnets to connect to in client VPC ([documentation](https://docs.aws.amazon.com/msk/1.0/apireference/clusters.html#clusters-prop-brokernodegroupinfo-clientsubnets)) | `list(string)` | `[]` | no |
-| <a name="input_broker_node_connectivity_info"></a> [broker\_node\_connectivity\_info](#input\_broker\_node\_connectivity\_info) | Information about the cluster access configuration | `any` | `{}` | no |
+| <a name="input_broker_node_connectivity_info"></a> [broker\_node\_connectivity\_info](#input\_broker\_node\_connectivity\_info) | Information about the cluster access configuration | <pre>object({<br/>    vpc_connectivity = optional(object({<br/>      client_authentication = optional(object({<br/>        sasl = optional(object({<br/>          iam   = optional(bool)<br/>          scram = optional(bool)<br/>        }))<br/>        tls = optional(bool)<br/>      }))<br/>    }))<br/>    public_access = optional(object({<br/>      type = optional(string)<br/>    }))<br/>  })</pre> | `null` | no |
 | <a name="input_broker_node_instance_type"></a> [broker\_node\_instance\_type](#input\_broker\_node\_instance\_type) | Specify the instance type to use for the kafka brokers. e.g. kafka.m5.large. ([Pricing info](https://aws.amazon.com/msk/pricing/)) | `string` | `null` | no |
 | <a name="input_broker_node_security_groups"></a> [broker\_node\_security\_groups](#input\_broker\_node\_security\_groups) | A list of the security groups to associate with the elastic network interfaces to control who can communicate with the cluster | `list(string)` | `[]` | no |
-| <a name="input_broker_node_storage_info"></a> [broker\_node\_storage\_info](#input\_broker\_node\_storage\_info) | A block that contains information about storage volumes attached to MSK broker nodes | `any` | `{}` | no |
-| <a name="input_client_authentication"></a> [client\_authentication](#input\_client\_authentication) | Configuration block for specifying a client authentication | `any` | `{}` | no |
+| <a name="input_broker_node_storage_info"></a> [broker\_node\_storage\_info](#input\_broker\_node\_storage\_info) | A block that contains information about storage volumes attached to MSK broker nodes | <pre>object({<br/>    ebs_storage_info = optional(object({<br/>      provisioned_throughput = optional(object({<br/>        enabled           = optional(bool)<br/>        volume_throughput = optional(number)<br/>      }))<br/>      volume_size = optional(number, 64)<br/>    }))<br/>  })</pre> | `null` | no |
+| <a name="input_client_authentication"></a> [client\_authentication](#input\_client\_authentication) | Configuration block for specifying a client authentication | <pre>object({<br/>    sasl = optional(object({<br/>      iam   = optional(bool)<br/>      scram = optional(bool)<br/>    }))<br/>    tls = optional(object({<br/>      certificate_authority_arns = optional(list(string))<br/>    }))<br/>    unauthenticated = optional(bool)<br/>  })</pre> | `null` | no |
 | <a name="input_cloudwatch_log_group_class"></a> [cloudwatch\_log\_group\_class](#input\_cloudwatch\_log\_group\_class) | Specifies the log class of the log group. Possible values are: STANDARD or INFREQUENT\_ACCESS. | `bool` | `null` | no |
 | <a name="input_cloudwatch_log_group_kms_key_id"></a> [cloudwatch\_log\_group\_kms\_key\_id](#input\_cloudwatch\_log\_group\_kms\_key\_id) | The ARN of the KMS Key to use when encrypting log data | `string` | `null` | no |
 | <a name="input_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#input\_cloudwatch\_log\_group\_name) | Name of the Cloudwatch Log Group to deliver logs to | `string` | `null` | no |
 | <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | Specifies the number of days you want to retain log events in the log group | `number` | `0` | no |
 | <a name="input_cloudwatch_logs_enabled"></a> [cloudwatch\_logs\_enabled](#input\_cloudwatch\_logs\_enabled) | Indicates whether you want to enable or disable streaming broker logs to Cloudwatch Logs | `bool` | `false` | no |
 | <a name="input_cluster_override_policy_documents"></a> [cluster\_override\_policy\_documents](#input\_cluster\_override\_policy\_documents) | Override policy documents for cluster policy | `list(string)` | `null` | no |
-| <a name="input_cluster_policy_statements"></a> [cluster\_policy\_statements](#input\_cluster\_policy\_statements) | Map of policy statements for cluster policy | `any` | `null` | no |
+| <a name="input_cluster_policy_statements"></a> [cluster\_policy\_statements](#input\_cluster\_policy\_statements) | Map of policy statements for cluster policy | <pre>map(object({<br/>    sid           = optional(string)<br/>    actions       = optional(list(string))<br/>    not_actions   = optional(list(string))<br/>    effect        = optional(string)<br/>    resources     = optional(list(string))<br/>    not_resources = optional(list(string))<br/>    principals = optional(list(object({<br/>      type        = string<br/>      identifiers = list(string)<br/>    })))<br/>    not_principals = optional(list(object({<br/>      type        = string<br/>      identifiers = list(string)<br/>    })))<br/>    conditions = optional(list(object({<br/>      test     = string<br/>      values   = list(string)<br/>      variable = string<br/>    })))<br/>    condition = optional(list(object({<br/>      test     = string<br/>      values   = list(string)<br/>      variable = string<br/>    })))<br/>  }))</pre> | `null` | no |
 | <a name="input_cluster_source_policy_documents"></a> [cluster\_source\_policy\_documents](#input\_cluster\_source\_policy\_documents) | Source policy documents for cluster policy | `list(string)` | `null` | no |
 | <a name="input_configuration_arn"></a> [configuration\_arn](#input\_configuration\_arn) | ARN of an externally created configuration to use | `string` | `null` | no |
 | <a name="input_configuration_description"></a> [configuration\_description](#input\_configuration\_description) | Description of the configuration | `string` | `null` | no |
 | <a name="input_configuration_name"></a> [configuration\_name](#input\_configuration\_name) | Name of the configuration | `string` | `null` | no |
 | <a name="input_configuration_revision"></a> [configuration\_revision](#input\_configuration\_revision) | Revision of the externally created configuration to use | `number` | `null` | no |
 | <a name="input_configuration_server_properties"></a> [configuration\_server\_properties](#input\_configuration\_server\_properties) | Contents of the server.properties file. Supported properties are documented in the [MSK Developer Guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-configuration-properties.html) | `map(string)` | `{}` | no |
-| <a name="input_connect_custom_plugin_timeouts"></a> [connect\_custom\_plugin\_timeouts](#input\_connect\_custom\_plugin\_timeouts) | Timeout configurations for the connect custom plugins | `map(string)` | <pre>{<br>  "create": null<br>}</pre> | no |
-| <a name="input_connect_custom_plugins"></a> [connect\_custom\_plugins](#input\_connect\_custom\_plugins) | Map of custom plugin configuration details (map of maps) | `any` | `{}` | no |
+| <a name="input_connect_custom_plugin_timeouts"></a> [connect\_custom\_plugin\_timeouts](#input\_connect\_custom\_plugin\_timeouts) | Timeout configurations for the connect custom plugins | `map(string)` | <pre>{<br/>  "create": null<br/>}</pre> | no |
+| <a name="input_connect_custom_plugins"></a> [connect\_custom\_plugins](#input\_connect\_custom\_plugins) | Map of custom plugin configuration details (map of maps) | <pre>map(object({<br/>    name           = string<br/>    description    = optional(string)<br/>    content_type   = string<br/>    s3_bucket_arn  = string<br/>    s3_file_key    = string<br/>    object_version = optional(string)<br/>    timeouts = object({<br/>      create = optional(string)<br/>    })<br/>  }))</pre> | `{}` | no |
 | <a name="input_connect_worker_config_description"></a> [connect\_worker\_config\_description](#input\_connect\_worker\_config\_description) | A summary description of the worker configuration | `string` | `null` | no |
 | <a name="input_connect_worker_config_name"></a> [connect\_worker\_config\_name](#input\_connect\_worker\_config\_name) | The name of the worker configuration | `string` | `null` | no |
 | <a name="input_connect_worker_config_properties_file_content"></a> [connect\_worker\_config\_properties\_file\_content](#input\_connect\_worker\_config\_properties\_file\_content) | Contents of connect-distributed.properties file. The value can be either base64 encoded or in raw format | `string` | `null` | no |
@@ -209,19 +209,20 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | Name of the MSK cluster | `string` | `"msk"` | no |
 | <a name="input_node_exporter_enabled"></a> [node\_exporter\_enabled](#input\_node\_exporter\_enabled) | Indicates whether you want to enable or disable the Node Exporter | `bool` | `false` | no |
 | <a name="input_number_of_broker_nodes"></a> [number\_of\_broker\_nodes](#input\_number\_of\_broker\_nodes) | The desired total number of broker nodes in the kafka cluster. It must be a multiple of the number of specified client subnets | `number` | `null` | no |
+| <a name="input_rebalancing"></a> [rebalancing](#input\_rebalancing) | Configuration block for intelligent rebalancing | <pre>object({<br/>    status = string<br/>  })</pre> | `null` | no |
 | <a name="input_s3_logs_bucket"></a> [s3\_logs\_bucket](#input\_s3\_logs\_bucket) | Name of the S3 bucket to deliver logs to | `string` | `null` | no |
 | <a name="input_s3_logs_enabled"></a> [s3\_logs\_enabled](#input\_s3\_logs\_enabled) | Indicates whether you want to enable or disable streaming broker logs to S3 | `bool` | `false` | no |
 | <a name="input_s3_logs_prefix"></a> [s3\_logs\_prefix](#input\_s3\_logs\_prefix) | Prefix to append to the folder name | `string` | `null` | no |
 | <a name="input_scaling_max_capacity"></a> [scaling\_max\_capacity](#input\_scaling\_max\_capacity) | Max storage capacity for Kafka broker autoscaling | `number` | `250` | no |
 | <a name="input_scaling_role_arn"></a> [scaling\_role\_arn](#input\_scaling\_role\_arn) | The ARN of the IAM role that allows Application AutoScaling to modify your scalable target on your behalf. This defaults to an IAM Service-Linked Role | `string` | `null` | no |
 | <a name="input_scaling_target_value"></a> [scaling\_target\_value](#input\_scaling\_target\_value) | The Kafka broker storage utilization at which scaling is initiated | `number` | `70` | no |
-| <a name="input_schema_registries"></a> [schema\_registries](#input\_schema\_registries) | A map of schema registries to be created | `map(any)` | `{}` | no |
-| <a name="input_schemas"></a> [schemas](#input\_schemas) | A map schemas to be created within the schema registry | `map(any)` | `{}` | no |
+| <a name="input_schema_registries"></a> [schema\_registries](#input\_schema\_registries) | A map of schema registries to be created | <pre>map(object({<br/>    name        = string<br/>    description = optional(string)<br/>    tags        = optional(map(string), {})<br/>  }))</pre> | `{}` | no |
+| <a name="input_schemas"></a> [schemas](#input\_schemas) | A map schemas to be created within the schema registry | <pre>map(object({<br/>    schema_name          = string<br/>    schema_registry_name = string<br/>    description          = optional(string)<br/>    data_format          = optional(string, "AVRO")<br/>    compatibility        = string<br/>    schema_definition    = string<br/>    tags                 = optional(map(string), {})<br/>  }))</pre> | `{}` | no |
 | <a name="input_scram_secret_association_secret_arn_list"></a> [scram\_secret\_association\_secret\_arn\_list](#input\_scram\_secret\_association\_secret\_arn\_list) | List of AWS Secrets Manager secret ARNs to associate with SCRAM | `list(string)` | `[]` | no |
 | <a name="input_storage_mode"></a> [storage\_mode](#input\_storage\_mode) | Controls storage mode for supported storage tiers. Valid values are: `LOCAL` or `TIERED` | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources created | `map(string)` | `{}` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Create, update, and delete timeout configurations for the cluster | `map(string)` | `{}` | no |
-| <a name="input_vpc_connections"></a> [vpc\_connections](#input\_vpc\_connections) | Map of VPC Connections to create | `any` | `{}` | no |
+| <a name="input_vpc_connections"></a> [vpc\_connections](#input\_vpc\_connections) | Map of VPC Connections to create | <pre>map(object({<br/>    authentication  = string<br/>    client_subnets  = list(string)<br/>    security_groups = list(string)<br/>    vpc_id          = string<br/>    tags            = optional(map(string), {})<br/>  }))</pre> | `{}` | no |
 
 ## Outputs
 

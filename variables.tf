@@ -28,8 +28,21 @@ variable "broker_node_client_subnets" {
 
 variable "broker_node_connectivity_info" {
   description = "Information about the cluster access configuration"
-  type        = any
-  default     = {}
+  type = object({
+    vpc_connectivity = optional(object({
+      client_authentication = optional(object({
+        sasl = optional(object({
+          iam   = optional(bool)
+          scram = optional(bool)
+        }))
+        tls = optional(bool)
+      }))
+    }))
+    public_access = optional(object({
+      type = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "broker_node_instance_type" {
@@ -46,14 +59,31 @@ variable "broker_node_security_groups" {
 
 variable "broker_node_storage_info" {
   description = "A block that contains information about storage volumes attached to MSK broker nodes"
-  type        = any
-  default     = {}
+  type = object({
+    ebs_storage_info = optional(object({
+      provisioned_throughput = optional(object({
+        enabled           = optional(bool)
+        volume_throughput = optional(number)
+      }))
+      volume_size = optional(number, 64)
+    }))
+  })
+  default = null
 }
 
 variable "client_authentication" {
   description = "Configuration block for specifying a client authentication"
-  type        = any
-  default     = {}
+  type = object({
+    sasl = optional(object({
+      iam   = optional(bool)
+      scram = optional(bool)
+    }))
+    tls = optional(object({
+      certificate_authority_arns = optional(list(string))
+    }))
+    unauthenticated = optional(bool)
+  })
+  default = null
 }
 
 variable "name" {
@@ -153,6 +183,14 @@ variable "node_exporter_enabled" {
   default     = false
 }
 
+variable "rebalancing" {
+  description = "Configuration block for intelligent rebalancing"
+  type = object({
+    status = string
+  })
+  default = null
+}
+
 variable "storage_mode" {
   description = "Controls storage mode for supported storage tiers. Valid values are: `LOCAL` or `TIERED`"
   type        = string
@@ -171,8 +209,15 @@ variable "timeouts" {
 
 variable "vpc_connections" {
   description = "Map of VPC Connections to create"
-  type        = any
-  default     = {}
+  type = map(object({
+    authentication  = string
+    client_subnets  = list(string)
+    security_groups = list(string)
+    vpc_id          = string
+    tags            = optional(map(string), {})
+  }))
+  default  = {}
+  nullable = false
 }
 
 ################################################################################
@@ -255,8 +300,33 @@ variable "cluster_override_policy_documents" {
 
 variable "cluster_policy_statements" {
   description = "Map of policy statements for cluster policy"
-  type        = any
-  default     = null
+  type = map(object({
+    sid           = optional(string)
+    actions       = optional(list(string))
+    not_actions   = optional(list(string))
+    effect        = optional(string)
+    resources     = optional(list(string))
+    not_resources = optional(list(string))
+    principals = optional(list(object({
+      type        = string
+      identifiers = list(string)
+    })))
+    not_principals = optional(list(object({
+      type        = string
+      identifiers = list(string)
+    })))
+    conditions = optional(list(object({
+      test     = string
+      values   = list(string)
+      variable = string
+    })))
+    condition = optional(list(object({
+      test     = string
+      values   = list(string)
+      variable = string
+    })))
+  }))
+  default = null
 }
 
 ################################################################################
@@ -327,14 +397,28 @@ variable "create_schema_registry" {
 
 variable "schema_registries" {
   description = "A map of schema registries to be created"
-  type        = map(any)
-  default     = {}
+  type = map(object({
+    name        = string
+    description = optional(string)
+    tags        = optional(map(string), {})
+  }))
+  default  = {}
+  nullable = false
 }
 
 variable "schemas" {
   description = "A map schemas to be created within the schema registry"
-  type        = map(any)
-  default     = {}
+  type = map(object({
+    schema_name          = string
+    schema_registry_name = string
+    description          = optional(string)
+    data_format          = optional(string, "AVRO")
+    compatibility        = string
+    schema_definition    = string
+    tags                 = optional(map(string), {})
+  }))
+  default  = {}
+  nullable = false
 }
 
 ################################################################################
@@ -343,8 +427,19 @@ variable "schemas" {
 
 variable "connect_custom_plugins" {
   description = "Map of custom plugin configuration details (map of maps)"
-  type        = any
-  default     = {}
+  type = map(object({
+    name           = string
+    description    = optional(string)
+    content_type   = string
+    s3_bucket_arn  = string
+    s3_file_key    = string
+    object_version = optional(string)
+    timeouts = object({
+      create = optional(string)
+    })
+  }))
+  default  = {}
+  nullable = false
 }
 
 variable "connect_custom_plugin_timeouts" {

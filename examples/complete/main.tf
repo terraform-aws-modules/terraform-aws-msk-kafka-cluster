@@ -1,5 +1,6 @@
 provider "aws" {
-  region = local.region
+  region                   = local.region
+  shared_credentials_files = ["~/.aws/credentials"]
 }
 
 data "aws_availability_zones" "available" {}
@@ -188,7 +189,7 @@ resource "random_pet" "this" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -272,7 +273,7 @@ resource "aws_secretsmanager_secret_policy" "this" {
 
 module "s3_logs_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   bucket_prefix = local.name
 
@@ -331,7 +332,7 @@ module "vpc_connection_security_group" {
 
 module "vpc_connection" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   name = "${local.name}-vpc-connection"
   cidr = local.vpc_connection_cidr
