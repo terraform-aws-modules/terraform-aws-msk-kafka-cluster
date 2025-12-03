@@ -117,22 +117,25 @@ resource "aws_msk_cluster" "this" {
   enhanced_monitoring = var.enhanced_monitoring
   kafka_version       = var.kafka_version
 
-  logging_info {
-    broker_logs {
-      cloudwatch_logs {
-        enabled   = var.cloudwatch_logs_enabled
-        log_group = var.cloudwatch_logs_enabled ? local.cloudwatch_log_group : null
-      }
+  dynamic "logging_info" {
+    for_each = length(regexall("^express", var.broker_node_instance_type)) > 0 ? [] : [true]
+    content {
+      broker_logs {
+        cloudwatch_logs {
+          enabled   = var.cloudwatch_logs_enabled
+          log_group = var.cloudwatch_logs_enabled ? local.cloudwatch_log_group : null
+        }
 
-      firehose {
-        enabled         = var.firehose_logs_enabled
-        delivery_stream = var.firehose_delivery_stream
-      }
+        firehose {
+          enabled         = var.firehose_logs_enabled
+          delivery_stream = var.firehose_delivery_stream
+        }
 
-      s3 {
-        bucket  = var.s3_logs_bucket
-        enabled = var.s3_logs_enabled
-        prefix  = var.s3_logs_prefix
+        s3 {
+          bucket  = var.s3_logs_bucket
+          enabled = var.s3_logs_enabled
+          prefix  = var.s3_logs_prefix
+        }
       }
     }
   }
@@ -258,6 +261,10 @@ data "aws_iam_policy_document" "this" {
 resource "random_id" "this" {
   count = var.create && var.create_configuration ? 1 : 0
 
+  keepers = {
+    kafka_version = var.kafka_version
+  }
+
   byte_length = 8
 }
 
@@ -266,7 +273,7 @@ resource "aws_msk_configuration" "this" {
 
   name              = format("%s-%s", coalesce(var.configuration_name, var.name), random_id.this[0].dec)
   description       = var.configuration_description
-  kafka_versions    = [var.kafka_version]
+  kafka_versions    = [random_id.this[0].keepers.kafka_version]
   server_properties = join("\n", [for k, v in var.configuration_server_properties : format("%s = %s", k, v)])
 
   lifecycle {
@@ -317,6 +324,8 @@ resource "aws_appautoscaling_target" "this" {
   resource_id        = aws_msk_cluster.this[0].arn
   scalable_dimension = "kafka:broker-storage:VolumeSize"
   service_namespace  = "kafka"
+
+  tags = var.tags
 }
 
 resource "aws_appautoscaling_policy" "this" {

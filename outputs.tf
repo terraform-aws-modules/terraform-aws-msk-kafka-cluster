@@ -8,7 +8,7 @@ output "arn" {
 }
 
 output "bootstrap_brokers" {
-  description = "Comma separated list of one or more hostname:port pairs of kafka brokers suitable to bootstrap connectivity to the kafka cluster"
+  description = "Comma separated list of one or more hostname:port pairs of Kafka brokers suitable to bootstrap connectivity to the Kafka cluster"
   value = compact([
     try(aws_msk_cluster.this[0].bootstrap_brokers, null),
     try(aws_msk_cluster.this[0].bootstrap_brokers_sasl_iam, null),
@@ -18,7 +18,7 @@ output "bootstrap_brokers" {
 }
 
 output "bootstrap_brokers_plaintext" {
-  description = "Comma separated list of one or more hostname:port pairs of kafka brokers suitable to bootstrap connectivity to the kafka cluster. Contains a value if `encryption_in_transit_client_broker` is set to `PLAINTEXT` or `TLS_PLAINTEXT`"
+  description = "Comma separated list of one or more hostname:port pairs of Kafka brokers suitable to bootstrap connectivity to the Kafka cluster. Contains a value if `encryption_in_transit_client_broker` is set to `PLAINTEXT` or `TLS_PLAINTEXT`"
   value       = try(aws_msk_cluster.this[0].bootstrap_brokers, null)
 }
 
@@ -35,6 +35,59 @@ output "bootstrap_brokers_sasl_scram" {
 output "bootstrap_brokers_tls" {
   description = "One or more DNS names (or IP addresses) and TLS port pairs. This attribute will have a value if `encryption_in_transit_client_broker` is set to `TLS_PLAINTEXT` or `TLS`"
   value       = try(aws_msk_cluster.this[0].bootstrap_brokers_tls, null)
+}
+
+output "bootstrap_brokers_public" {
+  description = "Comma separated list of one or more hostname:port pairs of Kafka brokers suitable to bootstrap connectivity to the Kafka cluster"
+  value = compact([
+    try(aws_msk_cluster.this[0].bootstrap_brokers_public_sasl_iam, null),
+    try(aws_msk_cluster.this[0].bootstrap_brokers_public_sasl_scram, null),
+    try(aws_msk_cluster.this[0].bootstrap_brokers_public_tls, null),
+  ])
+}
+
+output "bootstrap_brokers_public_sasl_iam" {
+  description = "One or more DNS names (or IP addresses) and SASL IAM port pairs"
+  value       = try(aws_msk_cluster.this[0].bootstrap_brokers_public_sasl_iam, null)
+}
+
+output "bootstrap_brokers_public_sasl_scram" {
+  description = "One or more DNS names (or IP addresses) and SASL SCRAM port pairs"
+  value       = try(aws_msk_cluster.this[0].bootstrap_brokers_public_sasl_scram, null)
+}
+
+output "bootstrap_brokers_public_tls" {
+  description = "One or more DNS names (or IP addresses) and TLS port pairs"
+  value       = try(aws_msk_cluster.this[0].bootstrap_brokers_public_tls, null)
+}
+
+output "bootstrap_brokers_vpc_connectivity" {
+  description = "Comma separated list of one or more hostname:port pairs of Kafka brokers suitable to bootstrap connectivity to the Kafka cluster"
+  value = compact([
+    try(aws_msk_cluster.this[0].bootstrap_brokers_vpc_connectivity_sasl_iam, null),
+    try(aws_msk_cluster.this[0].bootstrap_brokers_vpc_connectivity_sasl_scram, null),
+    try(aws_msk_cluster.this[0].bootstrap_brokers_vpc_connectivity_tls, null),
+  ])
+}
+
+output "bootstrap_brokers_vpc_connectivity_sasl_iam" {
+  description = "One or more DNS names (or IP addresses) and SASL IAM port pairs for VPC connectivity"
+  value       = try(aws_msk_cluster.this[0].bootstrap_brokers_vpc_connectivity_sasl_iam, null)
+}
+
+output "bootstrap_brokers_vpc_connectivity_sasl_scram" {
+  description = "One or more DNS names (or IP addresses) and SASL SCRAM port pairs for VPC connectivity"
+  value       = try(aws_msk_cluster.this[0].bootstrap_brokers_vpc_connectivity_sasl_scram, null)
+}
+
+output "bootstrap_brokers_vpc_connectivity_tls" {
+  description = "One or more DNS names (or IP addresses) and TLS port pairs for VPC connectivity"
+  value       = try(aws_msk_cluster.this[0].bootstrap_brokers_vpc_connectivity_tls, null)
+}
+
+output "cluster_name" {
+  description = "Name of the MSK cluster"
+  value       = try(aws_msk_cluster.this[0].cluster_name, null)
 }
 
 output "cluster_uuid" {

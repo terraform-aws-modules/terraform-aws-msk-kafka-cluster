@@ -16,7 +16,7 @@ $ terraform apply
 
 Note that this example may create resources which will incur monetary charges on your AWS bill. Run `terraform destroy` when you no longer need these resources.
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -63,9 +63,18 @@ No inputs.
 | <a name="output_arn"></a> [arn](#output\_arn) | Amazon Resource Name (ARN) of the MSK cluster |
 | <a name="output_bootstrap_brokers"></a> [bootstrap\_brokers](#output\_bootstrap\_brokers) | Comma separated list of one or more hostname:port pairs of kafka brokers suitable to bootstrap connectivity to the kafka cluster |
 | <a name="output_bootstrap_brokers_plaintext"></a> [bootstrap\_brokers\_plaintext](#output\_bootstrap\_brokers\_plaintext) | Comma separated list of one or more hostname:port pairs of kafka brokers suitable to bootstrap connectivity to the kafka cluster. Contains a value if `encryption_in_transit_client_broker` is set to `PLAINTEXT` or `TLS_PLAINTEXT` |
+| <a name="output_bootstrap_brokers_public"></a> [bootstrap\_brokers\_public](#output\_bootstrap\_brokers\_public) | Comma separated list of one or more hostname:port pairs of Kafka brokers suitable to bootstrap connectivity to the Kafka cluster |
+| <a name="output_bootstrap_brokers_public_sasl_iam"></a> [bootstrap\_brokers\_public\_sasl\_iam](#output\_bootstrap\_brokers\_public\_sasl\_iam) | One or more DNS names (or IP addresses) and SASL IAM port pairs |
+| <a name="output_bootstrap_brokers_public_sasl_scram"></a> [bootstrap\_brokers\_public\_sasl\_scram](#output\_bootstrap\_brokers\_public\_sasl\_scram) | One or more DNS names (or IP addresses) and SASL SCRAM port pairs |
+| <a name="output_bootstrap_brokers_public_tls"></a> [bootstrap\_brokers\_public\_tls](#output\_bootstrap\_brokers\_public\_tls) | One or more DNS names (or IP addresses) and TLS port pairs |
 | <a name="output_bootstrap_brokers_sasl_iam"></a> [bootstrap\_brokers\_sasl\_iam](#output\_bootstrap\_brokers\_sasl\_iam) | One or more DNS names (or IP addresses) and SASL IAM port pairs. This attribute will have a value if `encryption_in_transit_client_broker` is set to `TLS_PLAINTEXT` or `TLS` and `client_authentication_sasl_iam` is set to `true` |
 | <a name="output_bootstrap_brokers_sasl_scram"></a> [bootstrap\_brokers\_sasl\_scram](#output\_bootstrap\_brokers\_sasl\_scram) | One or more DNS names (or IP addresses) and SASL SCRAM port pairs. This attribute will have a value if `encryption_in_transit_client_broker` is set to `TLS_PLAINTEXT` or `TLS` and `client_authentication_sasl_scram` is set to `true` |
 | <a name="output_bootstrap_brokers_tls"></a> [bootstrap\_brokers\_tls](#output\_bootstrap\_brokers\_tls) | One or more DNS names (or IP addresses) and TLS port pairs. This attribute will have a value if `encryption_in_transit_client_broker` is set to `TLS_PLAINTEXT` or `TLS` |
+| <a name="output_bootstrap_brokers_vpc_connectivity"></a> [bootstrap\_brokers\_vpc\_connectivity](#output\_bootstrap\_brokers\_vpc\_connectivity) | Comma separated list of one or more hostname:port pairs of Kafka brokers suitable to bootstrap connectivity to the Kafka cluster |
+| <a name="output_bootstrap_brokers_vpc_connectivity_sasl_iam"></a> [bootstrap\_brokers\_vpc\_connectivity\_sasl\_iam](#output\_bootstrap\_brokers\_vpc\_connectivity\_sasl\_iam) | One or more DNS names (or IP addresses) and SASL IAM port pairs for VPC connectivity |
+| <a name="output_bootstrap_brokers_vpc_connectivity_sasl_scram"></a> [bootstrap\_brokers\_vpc\_connectivity\_sasl\_scram](#output\_bootstrap\_brokers\_vpc\_connectivity\_sasl\_scram) | One or more DNS names (or IP addresses) and SASL SCRAM port pairs for VPC connectivity |
+| <a name="output_bootstrap_brokers_vpc_connectivity_tls"></a> [bootstrap\_brokers\_vpc\_connectivity\_tls](#output\_bootstrap\_brokers\_vpc\_connectivity\_tls) | One or more DNS names (or IP addresses) and TLS port pairs for VPC connectivity |
+| <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | Name of the MSK cluster |
 | <a name="output_cluster_uuid"></a> [cluster\_uuid](#output\_cluster\_uuid) | UUID of the MSK cluster, for use in IAM policies |
 | <a name="output_configuration_arn"></a> [configuration\_arn](#output\_configuration\_arn) | Amazon Resource Name (ARN) of the configuration |
 | <a name="output_configuration_latest_revision"></a> [configuration\_latest\_revision](#output\_configuration\_latest\_revision) | Latest revision of the configuration |
@@ -79,6 +88,6 @@ No inputs.
 | <a name="output_scram_secret_association_id"></a> [scram\_secret\_association\_id](#output\_scram\_secret\_association\_id) | Amazon Resource Name (ARN) of the MSK cluster |
 | <a name="output_zookeeper_connect_string"></a> [zookeeper\_connect\_string](#output\_zookeeper\_connect\_string) | A comma separated list of one or more hostname:port pairs to use to connect to the Apache Zookeeper cluster. The returned values are sorted alphbetically |
 | <a name="output_zookeeper_connect_string_tls"></a> [zookeeper\_connect\_string\_tls](#output\_zookeeper\_connect\_string\_tls) | A comma separated list of one or more hostname:port pairs to use to connect to the Apache Zookeeper cluster via TLS. The returned values are sorted alphbetically |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
 
 Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/blob/master/LICENSE).

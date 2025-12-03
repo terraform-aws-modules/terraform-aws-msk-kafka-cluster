@@ -2,6 +2,66 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.13.1](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.13.0...v2.13.1) (2025-10-21)
+
+### Bug Fixes
+
+* Update CI workflow versions to latest ([#56](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/56)) ([d8aa58c](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/d8aa58c12b8d9bdeb94c5e4fc1e20cae11dcd712))
+
+## [2.13.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.12.0...v2.13.0) (2025-06-04)
+
+
+### Features
+
+* Add `bootstrap_brokers_vpc_connectivity_*` to outputs ([#54](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/54)) ([09c3e84](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/09c3e841fcda3a01c5f0b63d4510fc76f7716375))
+
+## [2.12.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.11.1...v2.12.0) (2025-04-22)
+
+
+### Features
+
+* Add `bootstrap_brokers_public_*` to outputs ([#49](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/49)) ([1683690](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/168369031b85d02b8f59eae2fa0abefcc95b3078))
+
+## [2.11.1](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.11.0...v2.11.1) (2025-03-07)
+
+
+### Bug Fixes
+
+* The logging info block should not be present if node types are "express*" ([#48](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/48)) ([846520e](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/846520ef07410e3a8012a004e0bd3912cc9d21f5))
+
+## [2.11.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.10.0...v2.11.0) (2025-01-06)
+
+
+### Features
+
+* Add cluster name to outputs ([#45](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/45)) ([c2ac138](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/c2ac138dc8e98e5b05d66a85249917d5dc057225))
+
+## [2.10.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.9.0...v2.10.0) (2024-11-26)
+
+
+### Features
+
+* Add tags to AppAutoscaling target ([#44](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/44)) ([f0857f3](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/f0857f3341ce4bb869ea11e7ad2a6d5a98d0149d))
+
+
+### Bug Fixes
+
+* Update CI workflow versions to latest ([#42](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/42)) ([d0682a9](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/d0682a9670b564f27697d5c0900147df1332a7b8))
+
+## [2.9.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.8.1...v2.9.0) (2024-09-10)
+
+
+### Features
+
+* Create a new configuration when the Kafka version is changed to avoid `ConflictException: A resource with this name already exists` errors ([#40](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/40)) ([d5b4e6c](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/d5b4e6cac2f1f0619d15e6c4f4b26f764ff3ecd2))
+
+## [2.8.1](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.8.0...v2.8.1) (2024-08-17)
+
+
+### Bug Fixes
+
+* Make `cloudwatch_log_group_class` type string ([#38](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/38)) ([92b7d8b](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/92b7d8bd09970374e2011e347e557865fd1fd34f))
+
 ## [2.8.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.7.0...v2.8.0) (2024-08-08)
 
 
