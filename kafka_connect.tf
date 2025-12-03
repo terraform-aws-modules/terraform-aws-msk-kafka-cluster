@@ -18,7 +18,7 @@ resource "aws_mskconnect_custom_plugin" "this" {
   }
 
   timeouts {
-    create = try(each.value.timeouts.create, var.connect_custom_plugin_timeouts.create, null)
+    create = coalesce(each.value.timeouts.create, var.connect_custom_plugin_timeouts.create, null)
   }
 }
 

@@ -199,8 +199,12 @@ variable "storage_mode" {
 
 variable "timeouts" {
   description = "Create, update, and delete timeout configurations for the cluster"
-  type        = map(string)
-  default     = {}
+  type = object({
+    create = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default = {}
 }
 
 ################################################################################
@@ -444,10 +448,10 @@ variable "connect_custom_plugins" {
 
 variable "connect_custom_plugin_timeouts" {
   description = "Timeout configurations for the connect custom plugins"
-  type        = map(string)
-  default = {
-    create = null
-  }
+  type = object({
+    create = optional(string)
+  })
+  default = null
 }
 
 ################################################################################
