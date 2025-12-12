@@ -44,7 +44,7 @@ module "msk_cluster" {
       content_type = "JAR"
 
       s3_bucket_arn     = module.s3_bucket.s3_bucket_arn
-      s3_file_key       = aws_s3_object.debezium_connector.id
+      s3_file_key       = local.connector
       s3_object_version = aws_s3_object.debezium_connector.version_id
 
       timeouts = {
@@ -110,7 +110,6 @@ module "s3_bucket" {
   version = "~> 5.0"
 
   bucket_prefix = local.name
-  acl           = "private"
 
   versioning = {
     enabled = true
