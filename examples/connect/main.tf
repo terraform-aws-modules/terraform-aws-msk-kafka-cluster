@@ -107,7 +107,7 @@ module "security_group" {
 
 module "s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   bucket_prefix = local.name
   acl           = "private"

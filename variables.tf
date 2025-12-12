@@ -432,26 +432,18 @@ variable "schemas" {
 variable "connect_custom_plugins" {
   description = "Map of custom plugin configuration details (map of maps)"
   type = map(object({
-    name           = string
-    description    = optional(string)
-    content_type   = string
-    s3_bucket_arn  = string
-    s3_file_key    = string
-    object_version = optional(string)
+    name              = string
+    description       = optional(string)
+    content_type      = string
+    s3_bucket_arn     = string
+    s3_file_key       = string
+    s3_object_version = optional(string)
     timeouts = object({
       create = optional(string)
     })
   }))
   default  = {}
   nullable = false
-}
-
-variable "connect_custom_plugin_timeouts" {
-  description = "Timeout configurations for the connect custom plugins"
-  type = object({
-    create = optional(string)
-  })
-  default = null
 }
 
 ################################################################################

@@ -6,19 +6,19 @@ resource "aws_mskconnect_custom_plugin" "this" {
   for_each = { for k, v in var.connect_custom_plugins : k => v if var.create }
 
   name         = each.value.name
-  description  = lookup(each.value, "description", null)
+  description  = each.value.description
   content_type = each.value.content_type
 
   location {
     s3 {
       bucket_arn     = each.value.s3_bucket_arn
       file_key       = each.value.s3_file_key
-      object_version = lookup(each.value, "s3_object_version", null)
+      object_version = each.value.s3_object_version
     }
   }
 
   timeouts {
-    create = coalesce(each.value.timeouts.create, var.connect_custom_plugin_timeouts.create, null)
+    create = each.value.timeouts.create
   }
 }
 
