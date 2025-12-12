@@ -13,6 +13,12 @@ variable "name" {
   default     = null
 }
 
+variable "region" {
+  description = "Region where this resource will be managed. Defaults to the Region set in the provider configuration"
+  type        = string
+  default     = null
+}
+
 variable "security_group_ids" {
   description = "Specifies up to five security groups that control inbound and outbound traffic for the serverless cluster"
   type        = list(string)

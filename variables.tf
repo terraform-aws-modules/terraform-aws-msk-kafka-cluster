@@ -4,6 +4,12 @@ variable "create" {
   default     = true
 }
 
+variable "region" {
+  description = "Region where this resource will be managed. Defaults to the Region set in the provider configuration"
+  type        = string
+  default     = null
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources created"
   type        = map(string)
@@ -440,6 +446,7 @@ variable "connect_custom_plugins" {
     s3_object_version = optional(string)
     timeouts = object({
       create = optional(string)
+      delete = optional(string)
     })
   }))
   default  = {}

@@ -175,6 +175,10 @@ module "msk_cluster" {
     }
   }
 
+  rebalancing = {
+    status = "ACTIVE"
+  }
+
   tags = local.tags
 }
 

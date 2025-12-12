@@ -19,6 +19,8 @@ resource "aws_msk_serverless_cluster" "this" {
     subnet_ids         = var.subnet_ids
   }
 
+  region = var.region
+
   tags = var.tags
 }
 
@@ -31,6 +33,7 @@ resource "aws_msk_cluster_policy" "this" {
 
   cluster_arn = aws_msk_serverless_cluster.this[0].arn
   policy      = data.aws_iam_policy_document.this[0].json
+  region      = var.region
 }
 
 data "aws_iam_policy_document" "this" {

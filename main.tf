@@ -161,6 +161,7 @@ resource "aws_msk_cluster" "this" {
     }
   }
 
+  region       = var.region
   storage_mode = var.storage_mode
 
   timeouts {
@@ -188,6 +189,7 @@ resource "aws_msk_vpc_connection" "this" {
 
   authentication     = each.value.authentication
   client_subnets     = each.value.client_subnets
+  region             = var.region
   security_groups    = each.value.security_groups
   target_cluster_arn = aws_msk_cluster.this[0].arn
   vpc_id             = each.value.vpc_id
@@ -204,6 +206,7 @@ resource "aws_msk_cluster_policy" "this" {
 
   cluster_arn = aws_msk_cluster.this[0].arn
   policy      = data.aws_iam_policy_document.this[0].json
+  region      = var.region
 }
 
 data "aws_iam_policy_document" "this" {
@@ -274,6 +277,7 @@ resource "aws_msk_configuration" "this" {
   name              = format("%s-%s", coalesce(var.configuration_name, var.name), random_id.this[0].dec)
   description       = var.configuration_description
   kafka_versions    = [random_id.this[0].keepers.kafka_version]
+  region            = var.region
   server_properties = join("\n", [for k, v in var.configuration_server_properties : format("%s = %s", k, v)])
 
   lifecycle {
@@ -289,6 +293,7 @@ resource "aws_msk_scram_secret_association" "this" {
   count = var.create && var.create_scram_secret_association && try(var.client_authentication.sasl.scram, false) ? 1 : 0
 
   cluster_arn     = aws_msk_cluster.this[0].arn
+  region          = var.region
   secret_arn_list = var.scram_secret_association_secret_arn_list
 }
 
@@ -307,6 +312,7 @@ resource "aws_cloudwatch_log_group" "this" {
   retention_in_days = var.cloudwatch_log_group_retention_in_days
   kms_key_id        = var.cloudwatch_log_group_kms_key_id
   log_group_class   = var.cloudwatch_log_group_class
+  region            = var.region
 
   tags = var.tags
 }
@@ -320,6 +326,7 @@ resource "aws_appautoscaling_target" "this" {
 
   max_capacity       = var.scaling_max_capacity
   min_capacity       = 1
+  region             = var.region
   role_arn           = var.scaling_role_arn
   resource_id        = aws_msk_cluster.this[0].arn
   scalable_dimension = "kafka:broker-storage:VolumeSize"
@@ -333,6 +340,7 @@ resource "aws_appautoscaling_policy" "this" {
 
   name               = "${var.name}-broker-storage-scaling"
   policy_type        = "TargetTrackingScaling"
+  region             = var.region
   resource_id        = aws_msk_cluster.this[0].arn
   scalable_dimension = aws_appautoscaling_target.this[0].scalable_dimension
   service_namespace  = aws_appautoscaling_target.this[0].service_namespace
@@ -355,6 +363,7 @@ resource "aws_glue_registry" "this" {
 
   registry_name = each.value.name
   description   = each.value.description
+  region        = var.region
 
   tags = merge(var.tags, each.value.tags)
 }
@@ -368,6 +377,7 @@ resource "aws_glue_schema" "this" {
   data_format       = each.value.data_format
   compatibility     = each.value.compatibility
   schema_definition = each.value.schema_definition
+  region            = var.region
 
   tags = merge(var.tags, each.value.tags)
 }
