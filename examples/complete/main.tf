@@ -175,9 +175,10 @@ module "msk_cluster" {
     }
   }
 
-  rebalancing = {
-    status = "ACTIVE"
-  }
+  # Intelligent rebalancing is only available for MSK Provisioned clusters with Express brokers.
+  #  rebalancing = {
+  #    status = "ACTIVE"
+  #  }
 
   tags = local.tags
 }
