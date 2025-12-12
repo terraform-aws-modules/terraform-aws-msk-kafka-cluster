@@ -121,6 +121,8 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 
 - [Basic](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/tree/master/examples/basic)
 - [Complete](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/tree/master/examples/complete)
+- [Connect](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/tree/master/examples/connect)
+- [serverless](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/tree/master/examples/serverless)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

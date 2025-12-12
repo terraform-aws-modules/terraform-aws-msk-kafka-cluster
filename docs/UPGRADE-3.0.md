@@ -6,6 +6,7 @@ Please consult the `examples` directory for reference example configurations. If
 
 - Terraform AWS provider minimum supported version raised to `v6.22.1`
 - Terraform minimum supported version raised to `v1.5.7`
+- `connect_custom_plugin_timeouts` removed in favor of `connect_custom_plugins.timeouts`
 
 ## Additional changes
 
@@ -51,67 +52,34 @@ Please consult the `examples` directory for reference example configurations. If
 
 Note: Only the relevant changes are shown for brevity
 
-### Before - v1.2 Example
-
-```hcl
-module "msk_kafka_cluster" {
-  source  = "terraform-aws-modules/msk-kafka-cluster/aws"
-  version = "1.2"
-
-  broker_node_ebs_volume_size = 20
-
-  client_authentication_sasl_scram = true
-
-  tags = {
-    Blueprint  = local.name
-    GithubRepo = "github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster"
-  }
-}
-```
-
-### After - v2.0 Example
+### Before - v2 Example
 
 ```hcl
 module "msk_kafka_cluster" {
   source  = "terraform-aws-modules/msk-kafka-cluster/aws"
   version = "2.0"
 
-  broker_node_storage_info = {
-    ebs_storage_info = { volume_size = 20 }
-  }
-
-  client_authentication = {
-    sasl = { scram = true }
-  }
-
-  tags = {
-    Blueprint  = local.name
-    GithubRepo = "github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster"
+  # Only the affected attributes are shown
+  connect_custom_plugin_timeouts = {
+    create = "20m"
   }
 }
 ```
 
-### Diff of Before vs After
+### After - v3.0 Example
 
-```diff
+```hcl
 module "msk_kafka_cluster" {
   source  = "terraform-aws-modules/msk-kafka-cluster/aws"
--  version = "1.2"
-+  version = "2.0"
+  version = "3.0"
 
--  broker_node_ebs_volume_size = 20
-+  broker_node_storage_info = {
-+    ebs_storage_info = { volume_size = 20 }
-+  }
-
--  client_authentication_sasl_scram = true
-+  client_authentication = {
-+    sasl = { scram = true }
-+  }
-
-  tags = {
-    Blueprint  = local.name
-    GithubRepo = "github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster"
+  # Only the affected attributes are shown
+  connect_custom_plugins = {
+    debezium = {
+      timeouts = {
+        create = "20m"
+      }
+    }
   }
 }
 ```
