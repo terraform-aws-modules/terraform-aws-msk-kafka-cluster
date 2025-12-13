@@ -7,6 +7,7 @@ Please consult the `examples` directory for reference example configurations. If
 - Terraform AWS provider minimum supported version raised to `v6.22.1`
 - Terraform minimum supported version raised to `v1.5.7`
 - `connect_custom_plugin_timeouts` removed in favor of `connect_custom_plugins.timeouts`
+- `cluster_policy_statements.conditions` is now `cluster_policy_statements.condition`
 
 ## Additional changes
 
@@ -30,7 +31,7 @@ Please consult the `examples` directory for reference example configurations. If
 
 2. Renamed variables:
 
-    - None
+    - `cluster_policy_statements.conditions` is now `cluster_policy_statements.condition`
 
 3. Added variables:
 
@@ -63,6 +64,18 @@ module "msk_kafka_cluster" {
   connect_custom_plugin_timeouts = {
     create = "20m"
   }
+
+  cluster_policy_statements = {
+    firehose = {
+      conditions = [
+        {
+          test     = "StringEquals"
+          values   = ["123456789012"]
+          variable = "aws:SourceAccount"
+        }
+      ]
+    }
+  }
 }
 ```
 
@@ -79,6 +92,18 @@ module "msk_kafka_cluster" {
       timeouts = {
         create = "20m"
       }
+    }
+  }
+
+  cluster_policy_statements = {
+    firehose = {
+      condition = [
+        {
+          test     = "StringEquals"
+          values   = ["123456789012"]
+          variable = "aws:SourceAccount"
+        }
+      ]
     }
   }
 }

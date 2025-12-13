@@ -76,11 +76,6 @@ variable "cluster_policy_statements" {
       type        = string
       identifiers = list(string)
     })))
-    conditions = optional(list(object({
-      test     = string
-      values   = list(string)
-      variable = string
-    })))
     condition = optional(list(object({
       test     = string
       values   = list(string)
