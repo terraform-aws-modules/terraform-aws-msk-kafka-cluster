@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.13.1...v3.0.0) (2025-12-14)
+
+### ⚠ BREAKING CHANGES
+
+* AWS MSV 6 and Terraform MSV 1.5.7 (#59)
+
+### Features
+
+* AWS MSV 6 and Terraform MSV 1.5.7 ([#59](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/59)) ([3317d29](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/3317d298c0cb79b6da83873d54b20714f9771d41))
+
 ## [2.13.1](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.13.0...v2.13.1) (2025-10-21)
 
 ### Bug Fixes
