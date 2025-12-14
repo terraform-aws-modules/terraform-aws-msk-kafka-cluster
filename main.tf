@@ -164,10 +164,14 @@ resource "aws_msk_cluster" "this" {
   region       = var.region
   storage_mode = var.storage_mode
 
-  timeouts {
-    create = var.timeouts.create
-    update = var.timeouts.update
-    delete = var.timeouts.delete
+  dynamic "timeouts" {
+    for_each = var.timeouts != null ? [var.timeouts] : []
+
+    content {
+      create = timeouts.value.create
+      update = timeouts.value.update
+      delete = timeouts.value.delete
+    }
   }
 
   # required for appautoscaling

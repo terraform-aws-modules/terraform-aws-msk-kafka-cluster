@@ -210,7 +210,7 @@ variable "timeouts" {
     update = optional(string)
     delete = optional(string)
   })
-  default = {}
+  default = null
 }
 
 ################################################################################
@@ -439,10 +439,10 @@ variable "connect_custom_plugins" {
     s3_bucket_arn     = string
     s3_file_key       = string
     s3_object_version = optional(string)
-    timeouts = object({
+    timeouts = optional(object({
       create = optional(string)
       delete = optional(string)
-    })
+    }))
   }))
   default  = {}
   nullable = false

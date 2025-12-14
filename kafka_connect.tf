@@ -17,9 +17,13 @@ resource "aws_mskconnect_custom_plugin" "this" {
     }
   }
 
-  timeouts {
-    create = each.value.timeouts.create
-    delete = each.value.timeouts.delete
+  dynamic "timeouts" {
+    for_each = each.value.timeouts != null ? [each.value.timeouts] : []
+
+    content {
+      create = timeouts.value.create
+      delete = timeouts.value.delete
+    }
   }
 }
 
