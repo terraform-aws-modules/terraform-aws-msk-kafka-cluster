@@ -10,35 +10,35 @@ resource "aws_msk_cluster" "this" {
     client_subnets  = var.broker_node_client_subnets
 
     dynamic "connectivity_info" {
-      for_each = length(var.broker_node_connectivity_info) > 0 ? [var.broker_node_connectivity_info] : []
+      for_each = var.broker_node_connectivity_info != null ? [var.broker_node_connectivity_info] : []
 
       content {
         dynamic "public_access" {
-          for_each = try([connectivity_info.value.public_access], [])
+          for_each = connectivity_info.value.public_access != null ? [connectivity_info.value.public_access] : []
 
           content {
-            type = try(public_access.value.type, null)
+            type = public_access.value.type
           }
         }
 
         dynamic "vpc_connectivity" {
-          for_each = try([connectivity_info.value.vpc_connectivity], [])
+          for_each = connectivity_info.value.vpc_connectivity != null ? [connectivity_info.value.vpc_connectivity] : []
 
           content {
             dynamic "client_authentication" {
-              for_each = try([vpc_connectivity.value.client_authentication], [])
+              for_each = vpc_connectivity.value.client_authentication != null ? [vpc_connectivity.value.client_authentication] : []
 
               content {
                 dynamic "sasl" {
-                  for_each = try([client_authentication.value.sasl], [])
+                  for_each = client_authentication.value.sasl != null ? [client_authentication.value.sasl] : []
 
                   content {
-                    iam   = try(sasl.value.iam, null)
-                    scram = try(sasl.value.scram, null)
+                    iam   = sasl.value.iam
+                    scram = sasl.value.scram
                   }
                 }
 
-                tls = try(client_authentication.value.tls, null)
+                tls = client_authentication.value.tls
               }
             }
           }
@@ -50,23 +50,23 @@ resource "aws_msk_cluster" "this" {
     security_groups = var.broker_node_security_groups
 
     dynamic "storage_info" {
-      for_each = length(var.broker_node_storage_info) > 0 ? [var.broker_node_storage_info] : []
+      for_each = var.broker_node_storage_info != null ? [var.broker_node_storage_info] : []
 
       content {
         dynamic "ebs_storage_info" {
-          for_each = try([storage_info.value.ebs_storage_info], [])
+          for_each = storage_info.value.ebs_storage_info != null ? [storage_info.value.ebs_storage_info] : []
 
           content {
             dynamic "provisioned_throughput" {
-              for_each = try([ebs_storage_info.value.provisioned_throughput], [])
+              for_each = ebs_storage_info.value.provisioned_throughput != null ? [ebs_storage_info.value.provisioned_throughput] : []
 
               content {
-                enabled           = try(provisioned_throughput.value.enabled, null)
-                volume_throughput = try(provisioned_throughput.value.volume_throughput, null)
+                enabled           = provisioned_throughput.value.enabled
+                volume_throughput = provisioned_throughput.value.volume_throughput
               }
             }
 
-            volume_size = try(ebs_storage_info.value.volume_size, 64)
+            volume_size = ebs_storage_info.value.volume_size
           }
         }
       }
@@ -74,27 +74,27 @@ resource "aws_msk_cluster" "this" {
   }
 
   dynamic "client_authentication" {
-    for_each = length(var.client_authentication) > 0 ? [var.client_authentication] : []
+    for_each = var.client_authentication != null ? [var.client_authentication] : []
 
     content {
       dynamic "sasl" {
-        for_each = try([client_authentication.value.sasl], [])
+        for_each = client_authentication.value.sasl != null ? [client_authentication.value.sasl] : []
 
         content {
-          iam   = try(sasl.value.iam, null)
-          scram = try(sasl.value.scram, null)
+          iam   = sasl.value.iam
+          scram = sasl.value.scram
         }
       }
 
       dynamic "tls" {
-        for_each = try([client_authentication.value.tls], [])
+        for_each = client_authentication.value.tls != null ? [client_authentication.value.tls] : []
 
         content {
-          certificate_authority_arns = try(tls.value.certificate_authority_arns, null)
+          certificate_authority_arns = tls.value.certificate_authority_arns
         }
       }
 
-      unauthenticated = try(client_authentication.value.unauthenticated, null)
+      unauthenticated = client_authentication.value.unauthenticated
     }
   }
 
@@ -153,12 +153,25 @@ resource "aws_msk_cluster" "this" {
     }
   }
 
+  dynamic "rebalancing" {
+    for_each = var.rebalancing != null ? [var.rebalancing] : []
+
+    content {
+      status = rebalancing.value.status
+    }
+  }
+
+  region       = var.region
   storage_mode = var.storage_mode
 
-  timeouts {
-    create = try(var.timeouts.create, null)
-    update = try(var.timeouts.update, null)
-    delete = try(var.timeouts.delete, null)
+  dynamic "timeouts" {
+    for_each = var.timeouts != null ? [var.timeouts] : []
+
+    content {
+      create = timeouts.value.create
+      update = timeouts.value.update
+      delete = timeouts.value.delete
+    }
   }
 
   # required for appautoscaling
@@ -180,11 +193,12 @@ resource "aws_msk_vpc_connection" "this" {
 
   authentication     = each.value.authentication
   client_subnets     = each.value.client_subnets
+  region             = var.region
   security_groups    = each.value.security_groups
   target_cluster_arn = aws_msk_cluster.this[0].arn
   vpc_id             = each.value.vpc_id
 
-  tags = merge(var.tags, try(each.value.tags, {}))
+  tags = merge(var.tags, each.value.tags)
 }
 
 ################################################################################
@@ -196,6 +210,7 @@ resource "aws_msk_cluster_policy" "this" {
 
   cluster_arn = aws_msk_cluster.this[0].arn
   policy      = data.aws_iam_policy_document.this[0].json
+  region      = var.region
 }
 
 data "aws_iam_policy_document" "this" {
@@ -205,18 +220,18 @@ data "aws_iam_policy_document" "this" {
   override_policy_documents = var.cluster_override_policy_documents
 
   dynamic "statement" {
-    for_each = var.cluster_policy_statements
+    for_each = var.cluster_policy_statements != null ? var.cluster_policy_statements : {}
 
     content {
-      sid           = try(statement.value.sid, null)
-      actions       = try(statement.value.actions, null)
-      not_actions   = try(statement.value.not_actions, null)
-      effect        = try(statement.value.effect, null)
-      resources     = try(statement.value.resources, [aws_msk_cluster.this[0].arn])
-      not_resources = try(statement.value.not_resources, null)
+      sid           = coalesce(statement.value.sid, statement.key)
+      actions       = statement.value.actions
+      not_actions   = statement.value.not_actions
+      effect        = statement.value.effect
+      resources     = statement.value.resources != null ? statement.value.resources : [aws_msk_cluster.this[0].arn]
+      not_resources = statement.value.not_resources
 
       dynamic "principals" {
-        for_each = try(statement.value.principals, [])
+        for_each = statement.value.principals != null ? statement.value.principals : []
 
         content {
           type        = principals.value.type
@@ -225,7 +240,7 @@ data "aws_iam_policy_document" "this" {
       }
 
       dynamic "not_principals" {
-        for_each = try(statement.value.not_principals, [])
+        for_each = statement.value.not_principals != null ? statement.value.not_principals : []
 
         content {
           type        = not_principals.value.type
@@ -234,7 +249,7 @@ data "aws_iam_policy_document" "this" {
       }
 
       dynamic "condition" {
-        for_each = try(statement.value.conditions, [])
+        for_each = statement.value.condition != null ? statement.value.condition : []
 
         content {
           test     = condition.value.test
@@ -266,6 +281,7 @@ resource "aws_msk_configuration" "this" {
   name              = format("%s-%s", coalesce(var.configuration_name, var.name), random_id.this[0].dec)
   description       = var.configuration_description
   kafka_versions    = [random_id.this[0].keepers.kafka_version]
+  region            = var.region
   server_properties = join("\n", [for k, v in var.configuration_server_properties : format("%s = %s", k, v)])
 
   lifecycle {
@@ -281,6 +297,7 @@ resource "aws_msk_scram_secret_association" "this" {
   count = var.create && var.create_scram_secret_association && try(var.client_authentication.sasl.scram, false) ? 1 : 0
 
   cluster_arn     = aws_msk_cluster.this[0].arn
+  region          = var.region
   secret_arn_list = var.scram_secret_association_secret_arn_list
 }
 
@@ -299,6 +316,7 @@ resource "aws_cloudwatch_log_group" "this" {
   retention_in_days = var.cloudwatch_log_group_retention_in_days
   kms_key_id        = var.cloudwatch_log_group_kms_key_id
   log_group_class   = var.cloudwatch_log_group_class
+  region            = var.region
 
   tags = var.tags
 }
@@ -312,6 +330,7 @@ resource "aws_appautoscaling_target" "this" {
 
   max_capacity       = var.scaling_max_capacity
   min_capacity       = 1
+  region             = var.region
   role_arn           = var.scaling_role_arn
   resource_id        = aws_msk_cluster.this[0].arn
   scalable_dimension = "kafka:broker-storage:VolumeSize"
@@ -325,6 +344,7 @@ resource "aws_appautoscaling_policy" "this" {
 
   name               = "${var.name}-broker-storage-scaling"
   policy_type        = "TargetTrackingScaling"
+  region             = var.region
   resource_id        = aws_msk_cluster.this[0].arn
   scalable_dimension = aws_appautoscaling_target.this[0].scalable_dimension
   service_namespace  = aws_appautoscaling_target.this[0].service_namespace
@@ -346,20 +366,22 @@ resource "aws_glue_registry" "this" {
   for_each = { for k, v in var.schema_registries : k => v if var.create && var.create_schema_registry }
 
   registry_name = each.value.name
-  description   = try(each.value.description, null)
+  description   = each.value.description
+  region        = var.region
 
-  tags = merge(var.tags, try(each.value.tags, {}))
+  tags = merge(var.tags, each.value.tags)
 }
 
 resource "aws_glue_schema" "this" {
   for_each = { for k, v in var.schemas : k => v if var.create && var.create_schema_registry }
 
   schema_name       = each.value.schema_name
-  description       = try(each.value.description, null)
+  description       = each.value.description
   registry_arn      = aws_glue_registry.this[each.value.schema_registry_name].arn
-  data_format       = try(each.value.data_format, "AVRO")
+  data_format       = each.value.data_format
   compatibility     = each.value.compatibility
   schema_definition = each.value.schema_definition
+  region            = var.region
 
-  tags = merge(var.tags, try(each.value.tags, {}))
+  tags = merge(var.tags, each.value.tags)
 }

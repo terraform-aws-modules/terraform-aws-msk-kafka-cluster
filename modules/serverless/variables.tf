@@ -13,6 +13,12 @@ variable "name" {
   default     = null
 }
 
+variable "region" {
+  description = "Region where this resource will be managed. Defaults to the Region set in the provider configuration"
+  type        = string
+  default     = null
+}
+
 variable "security_group_ids" {
   description = "Specifies up to five security groups that control inbound and outbound traffic for the serverless cluster"
   type        = list(string)
@@ -55,6 +61,26 @@ variable "cluster_override_policy_documents" {
 
 variable "cluster_policy_statements" {
   description = "Map of policy statements for cluster policy"
-  type        = any
-  default     = null
+  type = map(object({
+    sid           = optional(string)
+    actions       = optional(list(string))
+    not_actions   = optional(list(string))
+    effect        = optional(string)
+    resources     = optional(list(string))
+    not_resources = optional(list(string))
+    principals = optional(list(object({
+      type        = string
+      identifiers = list(string)
+    })))
+    not_principals = optional(list(object({
+      type        = string
+      identifiers = list(string)
+    })))
+    condition = optional(list(object({
+      test     = string
+      values   = list(string)
+      variable = string
+    })))
+  }))
+  default = null
 }

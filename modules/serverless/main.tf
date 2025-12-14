@@ -19,6 +19,8 @@ resource "aws_msk_serverless_cluster" "this" {
     subnet_ids         = var.subnet_ids
   }
 
+  region = var.region
+
   tags = var.tags
 }
 
@@ -31,6 +33,7 @@ resource "aws_msk_cluster_policy" "this" {
 
   cluster_arn = aws_msk_serverless_cluster.this[0].arn
   policy      = data.aws_iam_policy_document.this[0].json
+  region      = var.region
 }
 
 data "aws_iam_policy_document" "this" {
@@ -40,18 +43,18 @@ data "aws_iam_policy_document" "this" {
   override_policy_documents = var.cluster_override_policy_documents
 
   dynamic "statement" {
-    for_each = var.cluster_policy_statements
+    for_each = var.cluster_policy_statements != null ? var.cluster_policy_statements : {}
 
     content {
-      sid           = try(statement.value.sid, null)
-      actions       = try(statement.value.actions, null)
-      not_actions   = try(statement.value.not_actions, null)
-      effect        = try(statement.value.effect, null)
-      resources     = try(statement.value.resources, [aws_msk_serverless_cluster.this[0].arn])
-      not_resources = try(statement.value.not_resources, null)
+      sid           = statement.value.sid
+      actions       = statement.value.actions
+      not_actions   = statement.value.not_actions
+      effect        = statement.value.effect
+      resources     = statement.value.resources != null ? statement.value.resources : [aws_msk_serverless_cluster.this[0].arn]
+      not_resources = statement.value.not_resources
 
       dynamic "principals" {
-        for_each = try(statement.value.principals, [])
+        for_each = statement.value.principals != null ? statement.value.principals : []
 
         content {
           type        = principals.value.type
@@ -60,7 +63,7 @@ data "aws_iam_policy_document" "this" {
       }
 
       dynamic "not_principals" {
-        for_each = try(statement.value.not_principals, [])
+        for_each = statement.value.not_principals != null ? statement.value.not_principals : []
 
         content {
           type        = not_principals.value.type
@@ -69,7 +72,7 @@ data "aws_iam_policy_document" "this" {
       }
 
       dynamic "condition" {
-        for_each = try(statement.value.conditions, [])
+        for_each = statement.value.condition != null ? statement.value.condition : []
 
         content {
           test     = condition.value.test

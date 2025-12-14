@@ -44,7 +44,7 @@ module "msk_cluster" {
       content_type = "JAR"
 
       s3_bucket_arn     = module.s3_bucket.s3_bucket_arn
-      s3_file_key       = aws_s3_object.debezium_connector.id
+      s3_file_key       = local.connector
       s3_object_version = aws_s3_object.debezium_connector.version_id
 
       timeouts = {
@@ -71,7 +71,7 @@ module "msk_cluster" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -107,10 +107,9 @@ module "security_group" {
 
 module "s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   bucket_prefix = local.name
-  acl           = "private"
 
   versioning = {
     enabled = true
