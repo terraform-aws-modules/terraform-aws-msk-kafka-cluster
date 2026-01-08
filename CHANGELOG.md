@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v3.0.0...v3.1.0) (2026-01-08)
+
+### Features
+
+* Add provider meta user-agent ([#61](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/61)) ([e276584](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/e27658445859d5d1fc12e3f4b9c3e56a0d84c92f))
+
 ## [3.0.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v2.13.1...v3.0.0) (2025-12-14)
 
 ### ⚠ BREAKING CHANGES
