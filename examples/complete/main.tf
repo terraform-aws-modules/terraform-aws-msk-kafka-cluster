@@ -31,7 +31,7 @@ module "msk_cluster" {
   source = "../.."
 
   name                   = local.name
-  kafka_version          = "3.5.1"
+  kafka_version          = "3.9.x"
   number_of_broker_nodes = 3
   enhanced_monitoring    = "PER_TOPIC_PER_PARTITION"
 
@@ -71,8 +71,9 @@ module "msk_cluster" {
   configuration_name        = "complete-example-configuration"
   configuration_description = "Complete example configuration"
   configuration_server_properties = {
-    "auto.create.topics.enable" = true
-    "delete.topic.enable"       = true
+    "allow.everyone.if.no.acl.found" = true
+    "auto.create.topics.enable"      = true
+    "delete.topic.enable"            = true
   }
 
   jmx_exporter_enabled    = true
@@ -138,7 +139,8 @@ module "msk_cluster" {
     }
   }
 
-  # topics
+  # Topics
+  # Needs Kafka version > 3.6 and not supported for serverless MSK
   topics = {
     orders = {
       partition_count    = 6
