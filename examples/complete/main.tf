@@ -138,6 +138,19 @@ module "msk_cluster" {
     }
   }
 
+  # topics
+  topics = {
+    orders = {
+      partition_count    = 6
+      replication_factor = 3
+      configs            = jsonencode({ "retention.ms" = "604800000" })
+    }
+    events = {
+      partition_count    = 3
+      replication_factor = 3
+    }
+  }
+
   # cross account cluster policy
   create_cluster_policy = true
   cluster_policy_statements = {

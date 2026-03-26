@@ -361,6 +361,21 @@ resource "aws_appautoscaling_policy" "this" {
 }
 
 ################################################################################
+# Topics
+################################################################################
+
+resource "aws_msk_topic" "this" {
+  for_each = { for k, v in var.topics : k => v if var.create }
+
+  cluster_arn        = aws_msk_cluster.this[0].arn
+  name               = each.key
+  partition_count    = each.value.partition_count
+  replication_factor = each.value.replication_factor
+  configs            = each.value.configs
+  region             = var.region
+}
+
+################################################################################
 # Glue Schema Registry & Schema
 ################################################################################
 
