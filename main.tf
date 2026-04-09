@@ -43,6 +43,8 @@ resource "aws_msk_cluster" "this" {
             }
           }
         }
+
+        network_type = connectivity_info.value.network_type
       }
     }
 

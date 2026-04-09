@@ -47,6 +47,7 @@ variable "broker_node_connectivity_info" {
     public_access = optional(object({
       type = optional(string)
     }))
+    network_type = optional(string)
   })
   default = null
 }
