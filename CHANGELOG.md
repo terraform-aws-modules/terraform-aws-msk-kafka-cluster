@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v3.1.0...v3.2.0) (2026-04-09)
+
+### Features
+
+* Support `broker_node_group_info.connectivity_info.network_type` ([#65](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/65)) ([04d8d05](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/04d8d05edcfc93ea288af6b5603c66450911e2a5))
+
 ## [3.1.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v3.0.0...v3.1.0) (2026-01-08)
 
 ### Features
