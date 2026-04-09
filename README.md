@@ -130,14 +130,14 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.28 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.40 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.6 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.28 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.40 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.6 |
 
 ## Modules
@@ -169,7 +169,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_broker_node_az_distribution"></a> [broker\_node\_az\_distribution](#input\_broker\_node\_az\_distribution) | The distribution of broker nodes across availability zones ([documentation](https://docs.aws.amazon.com/msk/1.0/apireference/clusters.html#clusters-model-brokerazdistribution)). Currently the only valid value is `DEFAULT` | `string` | `null` | no |
 | <a name="input_broker_node_client_subnets"></a> [broker\_node\_client\_subnets](#input\_broker\_node\_client\_subnets) | A list of subnets to connect to in client VPC ([documentation](https://docs.aws.amazon.com/msk/1.0/apireference/clusters.html#clusters-prop-brokernodegroupinfo-clientsubnets)) | `list(string)` | `[]` | no |
-| <a name="input_broker_node_connectivity_info"></a> [broker\_node\_connectivity\_info](#input\_broker\_node\_connectivity\_info) | Information about the cluster access configuration | <pre>object({<br/>    vpc_connectivity = optional(object({<br/>      client_authentication = optional(object({<br/>        sasl = optional(object({<br/>          iam   = optional(bool)<br/>          scram = optional(bool)<br/>        }))<br/>        tls = optional(bool)<br/>      }))<br/>    }))<br/>    public_access = optional(object({<br/>      type = optional(string)<br/>    }))<br/>  })</pre> | `null` | no |
+| <a name="input_broker_node_connectivity_info"></a> [broker\_node\_connectivity\_info](#input\_broker\_node\_connectivity\_info) | Information about the cluster access configuration | <pre>object({<br/>    vpc_connectivity = optional(object({<br/>      client_authentication = optional(object({<br/>        sasl = optional(object({<br/>          iam   = optional(bool)<br/>          scram = optional(bool)<br/>        }))<br/>        tls = optional(bool)<br/>      }))<br/>    }))<br/>    public_access = optional(object({<br/>      type = optional(string)<br/>    }))<br/>    network_type = optional(string)<br/>  })</pre> | `null` | no |
 | <a name="input_broker_node_instance_type"></a> [broker\_node\_instance\_type](#input\_broker\_node\_instance\_type) | Specify the instance type to use for the kafka brokers. e.g. kafka.m5.large. ([Pricing info](https://aws.amazon.com/msk/pricing/)) | `string` | `null` | no |
 | <a name="input_broker_node_security_groups"></a> [broker\_node\_security\_groups](#input\_broker\_node\_security\_groups) | A list of the security groups to associate with the elastic network interfaces to control who can communicate with the cluster | `list(string)` | `[]` | no |
 | <a name="input_broker_node_storage_info"></a> [broker\_node\_storage\_info](#input\_broker\_node\_storage\_info) | A block that contains information about storage volumes attached to MSK broker nodes | <pre>object({<br/>    ebs_storage_info = optional(object({<br/>      provisioned_throughput = optional(object({<br/>        enabled           = optional(bool)<br/>        volume_throughput = optional(number)<br/>      }))<br/>      volume_size = optional(number, 64)<br/>    }))<br/>  })</pre> | `null` | no |
