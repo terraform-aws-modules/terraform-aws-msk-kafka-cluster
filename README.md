@@ -128,7 +128,7 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.40 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.6 |
@@ -136,7 +136,7 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.40 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.6 |
 
@@ -147,7 +147,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_appautoscaling_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy) | resource |
 | [aws_appautoscaling_target.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target) | resource |
 | [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
@@ -167,7 +167,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_broker_node_az_distribution"></a> [broker\_node\_az\_distribution](#input\_broker\_node\_az\_distribution) | The distribution of broker nodes across availability zones ([documentation](https://docs.aws.amazon.com/msk/1.0/apireference/clusters.html#clusters-model-brokerazdistribution)). Currently the only valid value is `DEFAULT` | `string` | `null` | no |
 | <a name="input_broker_node_client_subnets"></a> [broker\_node\_client\_subnets](#input\_broker\_node\_client\_subnets) | A list of subnets to connect to in client VPC ([documentation](https://docs.aws.amazon.com/msk/1.0/apireference/clusters.html#clusters-prop-brokernodegroupinfo-clientsubnets)) | `list(string)` | `[]` | no |
 | <a name="input_broker_node_connectivity_info"></a> [broker\_node\_connectivity\_info](#input\_broker\_node\_connectivity\_info) | Information about the cluster access configuration | <pre>object({<br/>    vpc_connectivity = optional(object({<br/>      client_authentication = optional(object({<br/>        sasl = optional(object({<br/>          iam   = optional(bool)<br/>          scram = optional(bool)<br/>        }))<br/>        tls = optional(bool)<br/>      }))<br/>    }))<br/>    public_access = optional(object({<br/>      type = optional(string)<br/>    }))<br/>    network_type = optional(string)<br/>  })</pre> | `null` | no |
@@ -225,13 +225,13 @@ No modules.
 | <a name="input_storage_mode"></a> [storage\_mode](#input\_storage\_mode) | Controls storage mode for supported storage tiers. Valid values are: `LOCAL` or `TIERED` | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resources created | `map(string)` | `{}` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Create, update, and delete timeout configurations for the cluster | <pre>object({<br/>    create = optional(string)<br/>    update = optional(string)<br/>    delete = optional(string)<br/>  })</pre> | `null` | no |
-| <a name="input_topics"></a> [topics](#input\_topics) | Map of MSK topics to create | <pre>map(object({<br/>    partition_count    = number<br/>    replication_factor = number<br/>    configs            = optional(string)<br/>  }))</pre> | `{}` | no |
+| <a name="input_topics"></a> [topics](#input\_topics) | Map of MSK topics to create | <pre>map(object({<br/>    configs            = optional(string)<br/>    name               = optional(string)<br/>    partition_count    = number<br/>    replication_factor = number<br/>  }))</pre> | `{}` | no |
 | <a name="input_vpc_connections"></a> [vpc\_connections](#input\_vpc\_connections) | Map of VPC Connections to create | <pre>map(object({<br/>    authentication  = string<br/>    client_subnets  = list(string)<br/>    security_groups = list(string)<br/>    vpc_id          = string<br/>    tags            = optional(map(string), {})<br/>  }))</pre> | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_appautoscaling_policy_arn"></a> [appautoscaling\_policy\_arn](#output\_appautoscaling\_policy\_arn) | The ARN assigned by AWS to the scaling policy |
 | <a name="output_appautoscaling_policy_name"></a> [appautoscaling\_policy\_name](#output\_appautoscaling\_policy\_name) | The scaling policy's name |
 | <a name="output_appautoscaling_policy_policy_type"></a> [appautoscaling\_policy\_policy\_type](#output\_appautoscaling\_policy\_policy\_type) | The scaling policy's type |

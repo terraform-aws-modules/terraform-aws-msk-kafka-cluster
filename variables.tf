@@ -434,9 +434,10 @@ variable "schemas" {
 variable "topics" {
   description = "Map of MSK topics to create"
   type = map(object({
+    configs            = optional(string)
+    name               = optional(string)
     partition_count    = number
     replication_factor = number
-    configs            = optional(string)
   }))
   default  = {}
   nullable = false

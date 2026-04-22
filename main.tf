@@ -367,12 +367,13 @@ resource "aws_appautoscaling_policy" "this" {
 resource "aws_msk_topic" "this" {
   for_each = { for k, v in var.topics : k => v if var.create }
 
+  region = var.region
+
   cluster_arn        = aws_msk_cluster.this[0].arn
-  name               = each.key
+  configs            = each.value.configs
+  name               = coalesce(each.value.name, each.key)
   partition_count    = each.value.partition_count
   replication_factor = each.value.replication_factor
-  configs            = each.value.configs
-  region             = var.region
 }
 
 ################################################################################
