@@ -428,6 +428,22 @@ variable "schemas" {
 }
 
 ################################################################################
+# Topics
+################################################################################
+
+variable "topics" {
+  description = "Map of MSK topics to create"
+  type = map(object({
+    configs            = optional(string)
+    name               = optional(string)
+    partition_count    = number
+    replication_factor = number
+  }))
+  default  = {}
+  nullable = false
+}
+
+################################################################################
 # Connect Custom Plugin
 ################################################################################
 
