@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v3.2.0...v3.3.0) (2026-04-22)
+
+### Features
+
+* Add native MSK topic management via aws_msk_topic ([#64](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/64)) ([5ce4f18](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/5ce4f185f887cd2f221d4cc31146d72a885c2562))
+
 ## [3.2.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v3.1.0...v3.2.0) (2026-04-09)
 
 ### Features
