@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.1](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v3.3.0...v3.3.1) (2026-08-06)
+
+### Bug Fixes
+
+* Update GitHub Actions and pre-commit hook versions ([#71](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/issues/71)) ([52d847e](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/commit/52d847e542aa281515be4659ec4274910a76e3de))
+
 ## [3.3.0](https://github.com/terraform-aws-modules/terraform-aws-msk-kafka-cluster/compare/v3.2.0...v3.3.0) (2026-04-22)
 
 ### Features
