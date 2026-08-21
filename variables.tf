@@ -287,6 +287,12 @@ variable "scram_secret_association_secret_arn_list" {
   default     = []
 }
 
+variable "import_legacy_scram_secret_associations" {
+  description = "Import legacy scram associations. Use this when migrating from the exclusively-managed list (<= v3.3.1)"
+  type        = bool
+  default     = false
+}
+
 ################################################################################
 # Cluster Policy
 ################################################################################

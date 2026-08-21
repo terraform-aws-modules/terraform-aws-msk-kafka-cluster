@@ -295,12 +295,24 @@ resource "aws_msk_configuration" "this" {
 # Secret(s)
 ################################################################################
 
-resource "aws_msk_scram_secret_association" "this" {
-  count = var.create && var.create_scram_secret_association && try(var.client_authentication.sasl.scram, false) ? 1 : 0
+removed {
+  from = aws_msk_scram_secret_association.this
+  lifecycle {
+    destroy = false
+  }
+}
 
-  cluster_arn     = aws_msk_cluster.this[0].arn
-  region          = var.region
-  secret_arn_list = var.scram_secret_association_secret_arn_list
+resource "aws_msk_single_scram_secret_association" "this" {
+  for_each    = toset(var.create && var.create_scram_secret_association ? var.scram_secret_association_secret_arn_list : [])
+  region      = var.region
+  cluster_arn = aws_msk_cluster.this[0].arn
+  secret_arn  = each.value
+}
+
+import {
+  for_each = toset(var.create && var.create_scram_secret_association && var.import_legacy_scram_secret_associations ? var.scram_secret_association_secret_arn_list : [])
+  id       = "${aws_msk_cluster.this[0].arn},${each.value}"
+  to       = aws_msk_single_scram_secret_association.this[each.value]
 }
 
 ################################################################################
