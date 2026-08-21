@@ -134,15 +134,6 @@ output "configuration_latest_revision" {
 }
 
 ################################################################################
-# Secret(s)
-################################################################################
-
-output "scram_secret_association_id" {
-  description = "Amazon Resource Name (ARN) of the MSK cluster"
-  value       = try(aws_msk_scram_secret_association.this[0].id, null)
-}
-
-################################################################################
 # CloudWatch Log Group
 ################################################################################
 
